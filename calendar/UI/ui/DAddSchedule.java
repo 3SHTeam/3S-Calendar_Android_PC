@@ -3,15 +3,18 @@ package ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+
 
 public class DAddSchedule extends JFrame {
    private JPanel contentPane;
@@ -23,37 +26,42 @@ public class DAddSchedule extends JFrame {
    private JLabel PriorityLabel;
    private JLabel ContextLabel;
    private JLabel timeLabel;
-   private JLabel ShareLabel;
    private JLabel GroupLabel;
    
 
    private JTextField ScheduleName;
    private JTextField Subtitle;
    private JTextField Location;
-   private JComboBox timeBox;
+   private JTextField StartHour;
+   private JTextField StartMin;
+   private JTextField EndHour;
+   private JTextField EndMin;
    private JComboBox groupBox;
-   private JTextField Shared;
 
    private DMonth_CalendarView calendar;
-   private EFriend_GroupUI group;
    private ScheduleData scheduleData;
    private int year,month,day;
    private JTextField context;
-
+   private int now_hour,now_min,start_hour,start_min,end_hour,end_min;
 
    public DAddSchedule(DMonth_CalendarView calendar,String date) {
 	
-
+	   Calendar c=Calendar.getInstance();
+	
+	   //currentTime
       this.calendar=calendar;
-      this.group = calendar.getGroup();
+      now_hour=c.get(Calendar.HOUR_OF_DAY);
+      now_min=c.get(Calendar.MINUTE);
       
-      setBounds(100, 100, 450, 730);
+
+      
+      setBounds(100, 100, 450, 619);
       contentPane = new JPanel();
       setResizable(false);
       contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
       setContentPane(contentPane);
       contentPane.setLayout(null);
-      setLocationRelativeTo(null);
+ 
       this.date=date;
       
       scheduleData=new ScheduleData(date);
@@ -84,17 +92,52 @@ public class DAddSchedule extends JFrame {
       timeLabel.setBounds(29, 154, 57, 15);
       contentPane.add(timeLabel);
       
-      timeBox = new JComboBox();	//시작시간과 끝나는 시간을 정해서 무조건 1시간 간격이 아니라 유동적인 스케줄 시간을 가지도록 함.
-      String Starttime[]={"00:00-01:00","01:00-02:00","02:00-03:00","03:00-04:00","04:00-05:00","05:00-06:00","06:00-07:00",
-    		  "07:00-08:00","08:00-09:00","09:00-10:00","10:00-11:00","11:00-12:00","12:00-13:00","13:00-14:00","14:00-15:00",
-    		  "15:00-16:00","16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00","20:00-21:00","21:00-22:00","22:00-23:00","23:00-24:00"};
-      for(int i=0;i<Starttime.length;i++){
-    	  timeBox.addItem(Starttime[i]);
-      }
-  
-      timeBox.setBounds(119, 151, 200, 21);
-      contentPane.add(timeBox);
+      StartHour= new JTextField(String.valueOf(now_hour));
+      StartHour.setBounds(119, 151, 30, 21);
+      contentPane.add(StartHour);
       
+      JLabel label=new JLabel("시");
+      label.setFont( new Font("고딕", Font.BOLD, 12));
+      label.setBounds(150, 152, 16, 18);
+      contentPane.add(label);
+      
+      /*Default로 현재 시간을 받아온다*/
+      StartMin=new JTextField(String.valueOf(now_min));
+      StartMin.setBounds(170, 151, 30, 21);
+      contentPane.add(StartMin);
+      
+      JLabel label1=new JLabel("분");
+      label1.setFont( new Font("고딕", Font.BOLD, 12));
+      label1.setBounds(205, 152, 16, 18);
+      contentPane.add(label1);
+      
+      JLabel label2 = new JLabel("-");
+      label2.setFont( new Font("고딕", Font.BOLD, 20));
+      label2.setBounds(228, 152, 14, 18);
+      contentPane.add(label2);
+      
+      EndHour= new JTextField(String.valueOf(now_hour));
+      EndHour.setBounds(250, 151, 30, 21);
+      contentPane.add(EndHour);
+      
+      JLabel label3=new JLabel("시");
+      label3.setFont( new Font("고딕", Font.BOLD, 12));
+      label3.setBounds(285, 152, 16, 18);
+      contentPane.add(label3);
+      
+      
+      StartMin=new JTextField(String.valueOf(now_min));
+      StartMin.setBounds(301, 151, 30, 21);
+      contentPane.add(StartMin);
+      
+      JLabel label4=new JLabel("분");
+      label4.setFont( new Font("고딕", Font.BOLD, 12));
+      label4.setBounds(335, 152, 16, 18);
+      contentPane.add(label4);
+      
+//      EndTimeBox = new JTextField();
+//      EndTimeBox.setBounds(256, 151, 84, 21);
+//      contentPane.add(EndTimeBox);
       
 //      JCheckBox PeriodCheckBox = new JCheckBox("반복");
 //      PeriodCheckBox.setBounds(326, 150, 57, 23);
@@ -131,44 +174,53 @@ public class DAddSchedule extends JFrame {
       contentPane.add(context);
       context.setColumns(10);
       
-      ShareLabel = new JLabel("공유자 :");
-      ShareLabel.setBounds(29, 451, 57, 15);
-      contentPane.add(ShareLabel);
       
-      
-      Shared = new JTextField();
-      Shared.setBounds(119, 448, 221, 21);
-      contentPane.add(Shared);
-      Shared.setColumns(10);
-
+      //개인으로 참가자추가?
       GroupLabel = new JLabel("그룹 :");
-      GroupLabel.setBounds(29, 553, 57, 15);
+      GroupLabel.setBounds(29, 451, 57, 15);
       contentPane.add(GroupLabel);
       
-      groupBox = new JComboBox();
-      groupBox.addItem("개인 스캐줄");
-      if(group.getGroupNum() != 0){
-    	  for(int i=0;i<group.getGroupNum();i++){
-    		  groupBox.addItem(group.getGroupName(i));
-    	  }
-      }
-  
-      groupBox.setBounds(119, 550, 200, 21);
-      contentPane.add(groupBox);  
       
+      groupBox = new JComboBox();//현재 있는 얻어온 그룹들을 저장시킨다.
+      groupBox.setBounds(119, 448, 221, 21);
       
+      String GroupName[]={"개인","3s","임의로 만들어준값들"};
+      //임의로 만듦
+       //나중에 디비에서
+      for(int i=0;i<GroupName.length;i++){
+//    	  GroupName[i]=fg.getGroupName(i); 	  
+    	  groupBox.addItem(GroupName[i]);
+      } 
+      contentPane.add(groupBox);
+
+
+        
       JButton addBtn = new JButton("add");
       addBtn.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
             //내용 저장 
-        	 setScheduleData();
-        	 calendar.addSchedule(scheduleData);
-    	 
-        	 dispose();       	 
+        	 String S_hour=StartHour.getText();
+        	 String S_min=StartMin.getText();
+        	 start_hour= Integer.parseInt(S_hour);
+        	 start_min=Integer.parseInt(S_min);
         	 
+        	 String E_hour=EndHour.getText();
+        	 String E_min=EndMin.getText();
+        	 end_hour= Integer.parseInt(E_hour);
+        	 end_min=Integer.parseInt(E_min);
+        	 
+        	 if((start_hour<24&&start_hour>0)||(end_hour<24&&end_hour>0)||(start_min<60&&start_min>0)||(end_min<60||end_min>0)){
+        	 setScheduleData();
+        	 calendar.addSchedule(scheduleData);    	 
+        	 dispose();       	 
+        	 }
+        	 else
+        	 {
+        		 JOptionPane.showMessageDialog(null,"올바른 시간형식이 아닙니다.","TimeError",JOptionPane.ERROR_MESSAGE);
+        	 }
          }
       });
-      addBtn.setBounds(175, 624, 97, 23);
+      addBtn.setBounds(175, 513, 97, 23);
       contentPane.add(addBtn);
      
   
@@ -180,11 +232,13 @@ public class DAddSchedule extends JFrame {
     	
     	 scheduleData.setScheduleName(ScheduleName.getText());
 //    	 scheduleData.setSubtitle(Subtitle.getText());
-    	 scheduleData.setGroup((String)groupBox.getSelectedItem());
-    	 scheduleData.setTime((String)timeBox.getSelectedItem());
+    	 
+    	 
+    	 scheduleData.setStartTime(StartHour.getText()+":"+StartMin.getText());
+    	 scheduleData.setEndTime(EndHour.getText()+":"+EndHour.getText());
 //    	 scheduleData.setLocation(Location.getText());
 //    	 scheduleData.setContext(context.getText());
-//    	 scheduleData.setShare(Shared.getText());
+    	 scheduleData.setShare((String)groupBox.getSelectedItem());
 //    	 
     	   }
      

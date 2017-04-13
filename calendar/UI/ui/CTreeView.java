@@ -25,10 +25,7 @@ public class CTreeView extends JFrame implements ActionListener{
    private JButton SettingBtn;
    private JButton LogoutBtn;
    private JButton CalendarIcon;
-   private JPanel DatePane;
-   private JPanel SchedulePane;
-   private JLabel DateLabel;
-   private JLabel ScheduleLabel; 
+ 
    public static final CTreeView instance =new CTreeView();
    
    private EFriend_GroupUI eFGUi = new EFriend_GroupUI();

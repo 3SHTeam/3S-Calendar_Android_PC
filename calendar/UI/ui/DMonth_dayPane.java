@@ -117,12 +117,7 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 		popup.add(deleteSchedule);
 		deleteSchedule.addActionListener(this);
 
-//		for(int i=0;i<scheduleArr.size();i++){
-//			scheduleName[i]=scheduleArr.get(i).getScheduleName();
-//			ScheduleLabel[i].setText(scheduleName[i]);
-//			AdayPanel.add(ScheduleLabel[i]);
-//		}
-	//	AdayPanel.add(ScheduleLabel);
+
 	}
 	public void initInfo(){
 		dayLabel.setText("");
@@ -174,10 +169,7 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 			ScheduleLabel[3].setText("...");
 			schedulePanel.add(ScheduleLabel[3]);	
 		}
-		
-		
-		
-		}
+	}
 	
 	public String getDate(){
 		return year+"/"+(month+1)+"/"+day;
@@ -248,6 +240,9 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 	        
 	        } 
 	
+	        else if(e.getSource()==deleteSchedule){
+	        	
+	        }
 
 	}
 	
@@ -296,7 +291,7 @@ class ShowDetail extends JDialog{
 		  model.setNumRows(0);
 		  for(int i=0;i<Vec.size();i++){ 
 			   Vector<String> VecInfo=new Vector<String>();//Vec에서 시간과 스케줄명 가져와 row 벡터에 저장 시키고 model.addRow
-			   VecInfo.add(Vec.get(i).getTime());//시간 데이터
+			   VecInfo.add(Vec.get(i).getStartTime()+"-"+Vec.get(i).getEndTime());//시작시간 데이터
 			   VecInfo.add(Vec.get(i).getScheduleName());//스켖
 			   model.addRow(VecInfo);
 			

@@ -27,10 +27,10 @@ public class DWeek_dayPane extends JPanel implements MouseListener{
 		super();
 		this.calendar=dWeek_CalendarView;
 		this.strDay=strDay;
-		this.setOpaque(false);
+		this.setOpaque(true);
 		dayPanel=new JPanel();
 		dayPanel.setLayout(new GridLayout(25,1));
-		dayPanel.setBackground(Color.WHITE);
+		dayPanel.setBackground(Color.PINK);
 		dayLabel.setText(strDay);
 		dayPanel.add(dayLabel);
 		

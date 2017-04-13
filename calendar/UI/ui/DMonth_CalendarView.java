@@ -369,7 +369,7 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 	}
 	
 	public String getScheduleDate(int index){
-		return scheduleVec.elementAt(index).getDate() + " " + scheduleVec.elementAt(index).getTime();
+		return scheduleVec.elementAt(index).getDate() + " " + scheduleVec.elementAt(index).getStartTime();
 	}
 }
 

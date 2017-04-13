@@ -34,7 +34,7 @@ public class BFirstLoginUI extends JFrame {
 	     setTitle("Join");
 	      setResizable(false);
 	      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      setBounds(100, 100, 700, 700);
+	      setBounds(100, 100, 700, 800);
 	      
 	      setLocationRelativeTo(null);
 	      contentPane = new JPanel();

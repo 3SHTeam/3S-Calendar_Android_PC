@@ -1,15 +1,19 @@
 package ui;
 
 public class ScheduleData {
+	private String eventId;
 	private String scheduleName=null;//스케줄이름
 	private String subtitle=null;//소제목
-	private String time=null;//시간
+	private String StartTime=null;//시작시간
+	private String EndTime=null;//종료시간
 	private String priority=null;//우선순위
 	private String location=null;//장소
 	private String context=null;//내용
 	private String share=null;//공유자
 	private String date;//날짜
 	private String group;//속한 그룹(기존 값은 개인)
+
+	
 	public int year,month,day;
 	
 	public ScheduleData(){}
@@ -21,7 +25,12 @@ public class ScheduleData {
 		 day=Integer.parseInt(tok[2]);
 		 
 	 }
-	
+	public String getEventId() {
+		return eventId;
+	}
+	public void setEventId(String eventId) {
+		this.eventId = eventId;
+	}	
 	public String getScheduleName() {
 		return scheduleName;
 	}
@@ -34,11 +43,17 @@ public class ScheduleData {
 	public void setSubtitle(String subtitle) {
 		this.subtitle = subtitle;
 	}
-	public String getTime() {
-		return time;
+	public String getStartTime() {
+		return StartTime;
 	}
-	public void setTime(String time) {
-		this.time = time;
+	public void setStartTime(String startTime) {
+		StartTime = startTime;
+	}
+	public String getEndTime() {
+		return EndTime;
+	}
+	public void setEndTime(String endTime) {
+		EndTime = endTime;
 	}
 	public String getPriority() {
 		return priority;
