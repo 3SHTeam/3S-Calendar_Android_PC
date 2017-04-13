@@ -102,8 +102,12 @@ public class GetGoogle {
 
 		// List the next 10 events from the primary calendar.
 		DateTime now = new DateTime(System.currentTimeMillis());
-		Events events = service.events().list("primary").setMaxResults(10).setTimeMin(now).setOrderBy("startTime")
-				.setSingleEvents(true).execute();
+		Events events = service.events().list("primary")
+				.setMaxResults(250)
+				.setTimeMin(now)
+				.setOrderBy("startTime")
+				.setSingleEvents(true)
+				.execute();
 
 		List<Event> items = events.getItems();
 		if (items.size() == 0) {

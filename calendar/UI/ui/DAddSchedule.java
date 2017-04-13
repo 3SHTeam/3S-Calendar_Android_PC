@@ -119,16 +119,16 @@ public class DAddSchedule extends JFrame {
       EndHour= new JTextField(String.valueOf(now_hour));
       EndHour.setBounds(250, 151, 30, 21);
       contentPane.add(EndHour);
-      
+
       JLabel label3=new JLabel("½Ã");
       label3.setFont( new Font("°íµñ", Font.BOLD, 12));
       label3.setBounds(285, 152, 16, 18);
       contentPane.add(label3);
       
       
-      StartMin=new JTextField(String.valueOf(now_min));
-      StartMin.setBounds(301, 151, 30, 21);
-      contentPane.add(StartMin);
+      EndMin=new JTextField(String.valueOf(now_min));
+      EndMin.setBounds(301, 151, 30, 21);
+      contentPane.add(EndMin);
       
       JLabel label4=new JLabel("ºÐ");
       label4.setFont( new Font("°íµñ", Font.BOLD, 12));
@@ -209,7 +209,7 @@ public class DAddSchedule extends JFrame {
         	 end_hour= Integer.parseInt(E_hour);
         	 end_min=Integer.parseInt(E_min);
         	 
-        	 if((start_hour<24&&start_hour>0)||(end_hour<24&&end_hour>0)||(start_min<60&&start_min>0)||(end_min<60||end_min>0)){
+        	 if((start_hour<24&&start_hour>0)&&(end_hour<24&&end_hour>0)&&(start_min<60&&start_min>0)&&(end_min<60||end_min>0)&&(start_hour<=end_hour)){
         	 setScheduleData();
         	 calendar.addSchedule(scheduleData);    	 
         	 dispose();       	 

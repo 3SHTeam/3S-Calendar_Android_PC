@@ -304,16 +304,14 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 					value=cnt++;	
 				
 				days[i].initInfo();
-				days[i].setValue(year,month,value,i);//기본정보인 년/월/일 정보를 보내주고, 각 판넬에 day 위치 설정
-				
+				days[i].setValue(year,month,value,i);//기본정보인 년/월/일 정보를 보내주고, 각 판넬에 day 위치 설정				
 				days[i].getVec().clear();//기존에 저장된 스케줄 초기화 시킨후 다시 받는다
 				
 				
 				for(int j=0;j<scheduleVec.size();j++){
 					ScheduleData sd=scheduleVec.get(j);
 				
-					if((year==sd.year)&&(month==sd.month-1)&&(value==sd.day)){
-						
+					if((year==sd.year)&&(month==sd.month-1)&&(value==sd.day)){						
 						days[i].setSchedule(sd);
 					}
 				}
