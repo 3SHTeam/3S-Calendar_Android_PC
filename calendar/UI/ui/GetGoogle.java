@@ -20,13 +20,16 @@ import com.google.api.client.util.DateTime;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.Event.Organizer;
 import com.google.api.services.calendar.model.Events;
+
+import Data.EventData;
 
 public class GetGoogle {
 	private static String eventId;// eventId
 	private static String scheduleName;// title
 	private static String location;// location
-	private static String description;// context
+	private static Organizer SMaster;//주최자
 	private static String date;// 시작날짜
 	private static String startTime;// 시작시간
 	private static String endTime; // 끝나는 시간
@@ -127,7 +130,7 @@ public class GetGoogle {
 				eventId = event.getId();										// eventId
 				scheduleName = event.getSummary();								// title
 				location = event.getLocation();									// location
-				description = event.getDescription();
+				SMaster=event.getOrganizer();
 
 				// 날짜와 시간 형식 변경
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -138,18 +141,19 @@ public class GetGoogle {
 
 				
 				//구글에서 받아온 정보들 ScheduleData에 저장
-				ScheduleData sd = new ScheduleData(date);
+				EventData eventData = new EventData();
 
-				sd.setEventId(eventId);
-				sd.setScheduleName(scheduleName);
-				sd.setLocation(location);
-				sd.setContext(description);
-				sd.setStartTime(startTime);
-				sd.setEndTime(endTime);
+				eventData.setData(0,eventId);
+				eventData.setData(1,scheduleName);
+				//eventData.setData(2,SMaster);//주최자?
+				eventData.setData(3,location);
+				eventData.setData(4,startTime);
+				eventData.setData(5,endTime);
 			
+				//아직 db에 연결이 안되어있으므로
 				
-				System.out.println("[이벤트id]:" + eventId + " [스케줄명]:" + scheduleName + " [장소]:" + location + " [설명]:"
-						+ description + " [날짜]:" + date + " [시작시간]:" + startTime + " [끝나는 시간]:" + endTime);
+				System.out.println("[이벤트id]:" + eventId + " [스케줄명]:" + scheduleName + " [장소]:" + location 
+						 + " [날짜]:" + date + " [시작시간]:" + startTime + " [끝나는 시간]:" + endTime);
 			}
 		}
 

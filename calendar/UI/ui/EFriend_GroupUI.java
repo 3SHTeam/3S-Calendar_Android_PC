@@ -311,31 +311,32 @@ public class EFriend_GroupUI extends JFrame implements MouseListener,ActionListe
 				String groupName = groupNameTable.getValueAt(row,col).toString();
 				rightTable.setNumRows(0);//테이블 초기화
 				
-				for(int i=0; i<calendar.getScheduleData().size();i++){
-					
-					if(calendar.getScheduleGroupName(i).equals(groupName)){	//스캐줄에 해당 그룹 스캐줄이 있다면 오른쪽 테이블에 표기
-						Vector<String> VecInfo=new Vector<String>();
-						VecInfo.add(calendar.getScheduleName(i));
-						VecInfo.add(calendar.getScheduleDate(i));
-						rightTable.addRow(VecInfo);
-			        	
-					}
-					
-				}
-				
-				
-				System.out.println(groupName);
+				/*DB에서 스케줄을 가져온다.//스케줄에 해당 그룹 스케줄이 있다면 오른쪽 테이블에 표기*/
+//				for(int i=0; i<calendar.getScheduleData().size();i++){
+//					
+//					if(calendar.getScheduleGroupName(i).equals(groupName)){	
+//						Vector<String> VecInfo=new Vector<String>();
+//						VecInfo.add(calendar.getScheduleName(i));
+//						VecInfo.add(calendar.getScheduleDate(i));
+//						rightTable.addRow(VecInfo);
+//			        	
+//					}
+//					
+//				}
+//				
+//				
+//				System.out.println(groupName);
 			}
 		}
-		else if(e.getComponent() ==  groupNameTable){	//오른쪽 테이블에서 클릭
-			if(e.getButton()==3){//오른쪽 마우스 클릭
-
-			}
-			else
-			{
-
-			}
-		}
+//		else if(e.getComponent() ==  groupNameTable){	//오른쪽 테이블에서 클릭
+//			if(e.getButton()==3){//오른쪽 마우스 클릭
+//
+//			}
+//			else
+//			{
+//
+//			}
+//		}
 	}
 	
 	@Override

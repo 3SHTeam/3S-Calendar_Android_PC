@@ -16,6 +16,8 @@ import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import Data.EventData;
+
 
 public class CTreeView extends JFrame implements ActionListener{
 
@@ -97,9 +99,10 @@ public class CTreeView extends JFrame implements ActionListener{
    }
    
    private DefaultMutableTreeNode addScheduleData(String date,String ScheduleName){
-	   ScheduleData sd=new ScheduleData(date);
-	   sd.setScheduleName(ScheduleName);
-	   return new DefaultMutableTreeNode(sd);
+	   EventData event=new EventData();
+	   event.setData(6,date);
+	   event.getData(2);
+	   return new DefaultMutableTreeNode(event);
 
    }
       

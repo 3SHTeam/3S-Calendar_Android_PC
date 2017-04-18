@@ -18,10 +18,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import Data.EventData;
 
 public class DMonth_dayPane extends JPanel implements MouseListener,ActionListener{
 	private JPanel dayInfoPanel;//하루 전체 정보판넬 
@@ -30,7 +31,7 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 	
 	private JLabel dayLabel=new JLabel();//day라벨
 	private String strDay;
-	
+	private String strMonth;
 	private JLabel[] ScheduleLabel=new JLabel[4];
 	
 	private String scheduleName;
@@ -42,24 +43,28 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 	private JMenuItem freezeDate;
 	private JMenuItem deleteSchedule;
 	
+	int position;
+	
 	private DMonth_CalendarView calendar;
 	ShowDetail showDetail;//상세보기 새창
-	
+	private EventData event;
 	//해당 날짜의 데이터들만 받아와저장
-	private Vector <ScheduleData>Vec=new Vector<ScheduleData>();
+	private Vector <EventData>dayScheduleVec=new Vector<EventData>();
 	
 
 	
-	public Vector<ScheduleData> getVec() {
-		return Vec;
+	public Vector<EventData> getVec() {
+		return dayScheduleVec;
 	}
-	public void setVec(Vector<ScheduleData> vec) {
-		Vec = vec;
+	public void setVec(Vector<EventData> vec) {
+		dayScheduleVec = vec;
 	}
 	
 	public DMonth_dayPane(DMonth_CalendarView calendar, EFriend_GroupUI group) {
 		
 		super();
+		GetGoogle gg=new GetGoogle();
+		
 		for(int i=0;i<4;i++){
 			ScheduleLabel[i] = new JLabel();
 			}
@@ -131,39 +136,61 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 	/*각각의 day판넬에 날짜 지정하기*/
 	public void setValue(int year,int month,int day, int position){
 		int num=position%7;
+		this.position=position;
 			
 		this.year=year;
 		this.month=month;
 		this.day=day;
 		
 		//날짜 설정
-		if(day==0){ strDay="";}
-		else{strDay=day+"";}
+		if(day==0){ 
+			strDay="";
+		}
+		else{
+			if(month>0&&month<10){
+				strMonth="0"+(month+1);
+			}
+			else{
+				strMonth=String.valueOf(month);
+			}
+
+			if(day>0&&day<10){
+				strDay="0"+day;
+			}
+			else{
+				strDay=String.valueOf(day);
+			}
+		
+		}
 
 		//토요일 파란 일요일 빨간 설정
 		if(num==0)
 			dayLabel.setForeground(Color.RED);
 		else if(num==6)
-			dayLabel.setForeground(Color.BLUE);
-		
-		dayLabel.setText(strDay);
-		dayNumPanel.setLayout(new BorderLayout());
 		dayNumPanel.add(dayLabel,BorderLayout.WEST);
+		
 	}
 	
-	public void setSchedule(ScheduleData sd){// 추가된 스케줄
+	/*DB에서 스케줄 가져오기*/
+	public void setSchedule(){// 추가된 스케줄
 	//맨처음 array기존에 있는 데이터는 set JLabel에 4개전까지 크기[]
-			
-		Vec.add(sd);
-		if(Vec.size()<4)	{//스케줄이 4이하일때
-			for(int i=0;i<Vec.size();i++){
-				ScheduleLabel[i].setText(Vec.get(i).getScheduleName());	
+		//DB에서 스케줄 가져오기
+		
+		String today= String.valueOf(year)+ strMonth+ strDay+"0000"; //201704140000
+		System.out.println(today);
+		
+		//스케줄을 받아와 dayScheduleVec에 저장
+		
+		
+		if(dayScheduleVec.size()<4)	{//스케줄이 4이하일때
+			for(int i=0;i<dayScheduleVec.size();i++){
+				ScheduleLabel[i].setText(dayScheduleVec.get(i).getData(2));	
 				schedulePanel.add(ScheduleLabel[i]);		
 				}
 		  }
 		else{
 			for(int i=0;i<3;i++){
-				ScheduleLabel[i].setText(Vec.get(i).getScheduleName());	
+				ScheduleLabel[i].setText(dayScheduleVec.get(i).getData(2));//스케줄명	
 				schedulePanel.add(ScheduleLabel[i]);
 			}
 			ScheduleLabel[3].setText("...");
@@ -171,6 +198,13 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 		}
 	}
 	
+	public void addSchedule(EventData event){
+		dayScheduleVec.add(event);
+		initInfo();//초기화
+		setValue(year, month, day, position);
+		setSchedule();
+		
+	}
 	public String getDate(){
 		return year+"/"+(month+1)+"/"+day;
 	}
@@ -190,7 +224,7 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 			}
 			else
 			{
-				showDetail=new ShowDetail(this, getDate(),Vec);
+				showDetail=new ShowDetail(this, getDate(),dayScheduleVec);
 				showDetail.setVisible(true);
 			}
 		}
@@ -227,7 +261,7 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 	public void actionPerformed(ActionEvent e) {
 		   if(e.getSource() == addSchedule)
 		   {		   
-			   DAddSchedule addSchedule=new DAddSchedule(calendar,this.getDate());
+			   DAddSchedule addSchedule=new DAddSchedule(this,this.getDate());
 			   addSchedule.setVisible(true);
 	        }
 	        else if(e.getSource() == modifySchedule)
@@ -246,11 +280,6 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 
 	}
 	
-
-	
-	
-	
-	
 }
 
 
@@ -259,11 +288,10 @@ class ShowDetail extends JDialog{
 	private JPanel contentPane;
 	private JLabel DateLabel;
 	private String date;
-	private String[] data;
 	private  JTable table;
 	
 	// 1번 판넬 클릭하면 2번판넬(상세정보있는 페이지로)로 전환
-	public ShowDetail(DMonth_dayPane dMonth_dayPane,String date, Vector<ScheduleData> Vec){
+	public ShowDetail(DMonth_dayPane dMonth_dayPane,String date, Vector<EventData> dayScheduleVec){
 		
 		this.date=date;
 	    setResizable(false);
@@ -289,10 +317,10 @@ class ShowDetail extends JDialog{
 		 
 		
 		  model.setNumRows(0);
-		  for(int i=0;i<Vec.size();i++){ 
+		  for(int i=0;i<dayScheduleVec.size();i++){ 
 			   Vector<String> VecInfo=new Vector<String>();//Vec에서 시간과 스케줄명 가져와 row 벡터에 저장 시키고 model.addRow
-			   VecInfo.add(Vec.get(i).getStartTime()+"-"+Vec.get(i).getEndTime());//시작시간 데이터
-			   VecInfo.add(Vec.get(i).getScheduleName());//스켖
+			   VecInfo.add(dayScheduleVec.get(i).getData(4)+"-"+dayScheduleVec.get(i).getData(5));//시작시간 데이터
+			   VecInfo.add(dayScheduleVec.get(i).getData(2));//스켖
 			   model.addRow(VecInfo);
 			
 		  }

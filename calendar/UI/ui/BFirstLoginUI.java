@@ -146,8 +146,7 @@ public class BFirstLoginUI extends JFrame {
 	      contentPane.add(startBtn);
 	   }
    public void setJoinData(){
-	   joinData=new JoinData();
-	   
+	   joinData=new JoinData();   
 	   joinData.setGoogleId(GoogleidField.getText());
 	   joinData.setGooglePw(GooglepwField.getText());
 	   joinData.setName(NameField.getText());

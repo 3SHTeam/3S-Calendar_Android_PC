@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import Data.EventData;
+
 
 
 public class DAddSchedule extends JFrame {
@@ -31,25 +33,25 @@ public class DAddSchedule extends JFrame {
 
    private JTextField ScheduleName;
    private JTextField Subtitle;
-   private JTextField Location;
+   private JTextField location;
    private JTextField StartHour;
    private JTextField StartMin;
    private JTextField EndHour;
    private JTextField EndMin;
    private JComboBox groupBox;
 
-   private DMonth_CalendarView calendar;
-   private ScheduleData scheduleData;
-   private int year,month,day;
+   private DMonth_dayPane dayPane;
+   private EventData event;
+   private String strYear,strMonth,strDay;
    private JTextField context;
    private int now_hour,now_min,start_hour,start_min,end_hour,end_min;
 
-   public DAddSchedule(DMonth_CalendarView calendar,String date) {
+   public DAddSchedule(DMonth_dayPane dayPane,String date) {
 	
 	   Calendar c=Calendar.getInstance();
 	
 	   //currentTime
-      this.calendar=calendar;
+      this.dayPane=dayPane;
       now_hour=c.get(Calendar.HOUR_OF_DAY);
       now_min=c.get(Calendar.MINUTE);
       
@@ -62,9 +64,13 @@ public class DAddSchedule extends JFrame {
       setContentPane(contentPane);
       contentPane.setLayout(null);
  
-      this.date=date;
-      
-      scheduleData=new ScheduleData(date);
+      this.date=date;//"xxxx/xx/xx"
+		 String []tok=date.split("/");
+		 strYear=tok[0];
+		 strMonth=tok[1];
+		 strDay=tok[2];
+		 
+		 
       DayLabel = new JLabel(date);
       DayLabel.setFont(new Font("굴림", Font.BOLD, 14));
       DayLabel.setBounds(162, 21, 116, 15);
@@ -155,10 +161,10 @@ public class DAddSchedule extends JFrame {
       LocationLabel.setBounds(29, 259, 57, 15);
       contentPane.add(LocationLabel);
       
-      Location = new JTextField();
-      Location.setColumns(10);
-      Location.setBounds(121, 256, 199, 21);
-      contentPane.add(Location); 
+      location = new JTextField();
+      location.setColumns(10);
+      location.setBounds(121, 256, 199, 21);
+      contentPane.add(location); 
       
 //      ImageIcon LocationIcon=new ImageIcon("image/ic_room_black_23dp_1x.png");
 //      JButton locationBtn = new JButton(LocationIcon);
@@ -211,7 +217,7 @@ public class DAddSchedule extends JFrame {
         	 
         	 if((start_hour<24&&start_hour>0)&&(end_hour<24&&end_hour>0)&&(start_min<60&&start_min>0)&&(end_min<60||end_min>0)&&(start_hour<=end_hour)){
         	 setScheduleData();
-        	 calendar.addSchedule(scheduleData);    	 
+        	 dayPane.addSchedule(event);    	 
         	 dispose();       	 
         	 }
         	 else
@@ -230,23 +236,21 @@ public class DAddSchedule extends JFrame {
      public void setScheduleData(){//ScheduleData를 셋
     	 System.out.println("스케줄이름:"+ScheduleName.getText());
     	
-    	 scheduleData.setScheduleName(ScheduleName.getText());
-//    	 scheduleData.setSubtitle(Subtitle.getText());
-    	 
-    	 
-    	 scheduleData.setStartTime(StartHour.getText()+":"+StartMin.getText());
-    	 scheduleData.setEndTime(EndHour.getText()+":"+EndHour.getText());
-//    	 scheduleData.setLocation(Location.getText());
-//    	 scheduleData.setContext(context.getText());
-    	 scheduleData.setShare((String)groupBox.getSelectedItem());
+    	 event.setData(2,ScheduleName.getText());
+    	 event.setData(3,location.getText());
+    	 event.setData(4,strYear+strMonth+strDay+StartHour.getText()+StartMin.getText());//"yyyyMMddHHmm"
+    	 event.setData(5,strYear+strMonth+strDay+EndHour.getText()+":"+EndHour.getText());//"yyyyMMddHHmm"
+    	 event.setData(6,date);   //"xxxx/xx/xx" 
+
+//   event.setShare((String)groupBox.getSelectedItem());
 //    	 
     	   }
      
      
     
      
-     public ScheduleData getScheduleData(){
-		return scheduleData;//set 한 값을 daypane scheduleArr에 얻어와 add  	 
+     public EventData getEventData(){
+		return event;//set 한 값을 daypane scheduleArr에 얻어와 add  	 
      }
      
 }

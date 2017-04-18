@@ -41,11 +41,10 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 	private JButton TreeViewIcon;
 	private JButton weekBtn;
 	private JButton todayBtn;
-	private Vector <ScheduleData>scheduleVec=new Vector<ScheduleData>();
 	
 	private static EFriend_GroupUI group;
-	
-	
+
+
 	public static final DMonth_CalendarView instance =new DMonth_CalendarView(group);
 	
 	private Calendar now= Calendar.getInstance();
@@ -306,15 +305,17 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 				days[i].initInfo();
 				days[i].setValue(year,month,value,i);//기본정보인 년/월/일 정보를 보내주고, 각 판넬에 day 위치 설정				
 				days[i].getVec().clear();//기존에 저장된 스케줄 초기화 시킨후 다시 받는다
+//				days[i].setSchedule();
 				
+				//for(int j=0;j<scheduleVec.size();j++){
+				//	ScheduleData sd=scheduleVec.get(j);
 				
-				for(int j=0;j<scheduleVec.size();j++){
-					ScheduleData sd=scheduleVec.get(j);
-				
-					if((year==sd.year)&&(month==sd.month-1)&&(value==sd.day)){						
-						days[i].setSchedule(sd);
-					}
+				//	if((year==sd.year)&&(month==sd.month-1)&&(value==sd.day)){						
+				if(value!=0)	{	
+				days[i].setSchedule();
 				}
+				//	}
+				//}
 				if(value==today){
 					days[i].setIsCurrentDate(true);//현재 날짜 표시 check
 				}
@@ -322,11 +323,11 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 	}
 	
 	//addSchedule
-	public void addSchedule(ScheduleData scheduleData){
-		scheduleVec.add(scheduleData);
-		changeDate();//갱신
-	}
-	
+//	public void addSchedule(ScheduleData scheduleData){
+//		scheduleVec.add(scheduleData);
+//		changeDate();//갱신
+//	}
+//	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.setVisible(false);
@@ -346,9 +347,6 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 			return instance;
 		}
 	
-	public Vector<ScheduleData> getScheduleData(){
-		return scheduleVec;
-	}
 
 	public void setGroup(EFriend_GroupUI group){
 		this.group = group;
@@ -358,17 +356,17 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 		return group;
 	}
 	
-	public String getScheduleGroupName(int index){
-		return scheduleVec.elementAt(index).getGroup();
-	}
-	
-	public String getScheduleName(int index){
-		return scheduleVec.elementAt(index).getScheduleName();
-	}
-	
-	public String getScheduleDate(int index){
-		return scheduleVec.elementAt(index).getDate() + " " + scheduleVec.elementAt(index).getStartTime();
-	}
+//	public String getScheduleGroupName(int index){
+//		return scheduleVec.elementAt(index).getGroup();
+//	}
+//	
+//	public String getScheduleName(int index){
+//		return scheduleVec.elementAt(index).getScheduleName();
+//	}
+//	
+//	public String getScheduleDate(int index){
+//		return scheduleVec.elementAt(index).getDate() + " " + scheduleVec.elementAt(index).getStartTime();
+//	}
 }
 
 
