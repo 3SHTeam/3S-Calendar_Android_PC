@@ -130,7 +130,6 @@ public class GetGoogle {
 				eventId = event.getId();										// eventId
 				scheduleName = event.getSummary();								// title
 				location = event.getLocation();									// location
-				SMaster=event.getOrganizer();
 
 				// 날짜와 시간 형식 변경
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
