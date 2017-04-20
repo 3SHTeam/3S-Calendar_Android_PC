@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import Data.EventData;
 
 public class DMonth_dayPane extends JPanel implements MouseListener,ActionListener{
+	
 	private JPanel dayInfoPanel;//하루 전체 정보판넬 
 	private JPanel dayNumPanel;
 	private JPanel schedulePanel;
