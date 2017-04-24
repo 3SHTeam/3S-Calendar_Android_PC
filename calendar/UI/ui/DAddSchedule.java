@@ -23,16 +23,15 @@ public class DAddSchedule extends JFrame {
    private JLabel DayLabel;
    private String date;//"년/월/일"
    private JLabel ScheduleNameLabel;
-   private JLabel SubtitleLabel;
+
    private JLabel LocationLabel;
-   private JLabel PriorityLabel;
+   private JLabel tagLabel;
    private JLabel ContextLabel;
    private JLabel timeLabel;
    private JLabel GroupLabel;
    
 
    private JTextField ScheduleName;
-   private JTextField Subtitle;
    private JTextField location;
    private JTextField StartHour;
    private JTextField StartMin;
@@ -40,18 +39,19 @@ public class DAddSchedule extends JFrame {
    private JTextField EndMin;
    private JComboBox groupBox;
 
-   private DMonth_dayPane dayPane;
+   private DMonth_CalendarView calendar;
    private EventData event;
    private String strYear,strMonth,strDay;
    private JTextField context;
    private int now_hour,now_min,start_hour,start_min,end_hour,end_min;
+   private TagSet tagSet;
 
-   public DAddSchedule(DMonth_dayPane dayPane,String date) {
+   public DAddSchedule(DMonth_CalendarView calendar,String date) {
 	
 	   Calendar c=Calendar.getInstance();
 	
 	   //currentTime
-      this.dayPane=dayPane;
+      this.calendar=calendar;
       now_hour=c.get(Calendar.HOUR_OF_DAY);
       now_min=c.get(Calendar.MINUTE);
       
@@ -84,16 +84,7 @@ public class DAddSchedule extends JFrame {
       ScheduleName.setBounds(119, 59, 221, 21);
       contentPane.add(ScheduleName);
       ScheduleName.setColumns(10);
-      
-      SubtitleLabel = new JLabel("소제목명 :");
-      SubtitleLabel.setBounds(29, 109, 57, 15);
-      contentPane.add(SubtitleLabel);
-      
-      Subtitle = new JTextField();
-      Subtitle.setColumns(10);
-      Subtitle.setBounds(119, 106, 221, 21);
-      contentPane.add(Subtitle);
-      
+
       timeLabel = new JLabel("시간 :");
       timeLabel.setBounds(29, 154, 57, 15);
       contentPane.add(timeLabel);
@@ -141,21 +132,21 @@ public class DAddSchedule extends JFrame {
       label4.setBounds(335, 152, 16, 18);
       contentPane.add(label4);
       
-//      EndTimeBox = new JTextField();
-//      EndTimeBox.setBounds(256, 151, 84, 21);
-//      contentPane.add(EndTimeBox);
       
-//      JCheckBox PeriodCheckBox = new JCheckBox("반복");
-//      PeriodCheckBox.setBounds(326, 150, 57, 23);
-//      contentPane.add(PeriodCheckBox);
+      tagLabel = new JLabel("태그 :");
+      tagLabel.setBounds(29, 206, 75, 15);
+      contentPane.add(tagLabel);
       
-      PriorityLabel = new JLabel("우선순위 :");
-      PriorityLabel.setBounds(29, 206, 75, 15);
-      contentPane.add(PriorityLabel);
-      
-//      JComboBox PrioritycomboBox = new JComboBox();
-//      PrioritycomboBox.setBounds(119, 203, 221, 21);
-//      contentPane.add(PrioritycomboBox);
+      JComboBox tagBox = new JComboBox();
+      tagSet=new TagSet();
+      tagSet.setTags(calendar.getTags());
+      String[] tagNames=tagSet.checkTagName();
+      System.out.println(tagNames);
+      for(int i=0;i<tagNames.length;i++){
+    	  tagBox.addItem(tagNames[i]);
+      } 
+      tagBox.setBounds(119, 203, 221, 21);
+      contentPane.add(tagBox);
       
       LocationLabel = new JLabel("장소 :");
       LocationLabel.setBounds(29, 259, 57, 15);
@@ -217,7 +208,7 @@ public class DAddSchedule extends JFrame {
         	 
         	 if((start_hour<24&&start_hour>0)&&(end_hour<24&&end_hour>0)&&(start_min<60&&start_min>0)&&(end_min<60||end_min>0)&&(start_hour<=end_hour)){
         	 setScheduleData();
-        	 dayPane.addSchedule(event);    	 
+        	 calendar.addSchedule(event);    	 
         	 dispose();       	 
         	 }
         	 else
@@ -234,13 +225,12 @@ public class DAddSchedule extends JFrame {
 
        
      public void setScheduleData(){//ScheduleData를 셋
-    	 System.out.println("스케줄이름:"+ScheduleName.getText());
-    	
+    	 System.out.println("스케줄이름:"+ScheduleName.getText());  	
     	 event.setData(2,ScheduleName.getText());
     	 event.setData(3,location.getText());
     	 event.setData(4,strYear+strMonth+strDay+StartHour.getText()+StartMin.getText());//"yyyyMMddHHmm"
     	 event.setData(5,strYear+strMonth+strDay+EndHour.getText()+":"+EndHour.getText());//"yyyyMMddHHmm"
-    	 event.setData(6,date);   //"xxxx/xx/xx" 
+
 
 //   event.setShare((String)groupBox.getSelectedItem());
 //    	 

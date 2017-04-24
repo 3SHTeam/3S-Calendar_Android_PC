@@ -30,7 +30,7 @@ public class CTreeView extends JFrame implements ActionListener{
  
    public static final CTreeView instance =new CTreeView();
    
-   private EFriend_GroupUI eFGUi = new EFriend_GroupUI();
+   private EFriend_GroupUI fgUI = new EFriend_GroupUI();
 
    DMonth_CalendarView calendar=(DMonth_CalendarView) DMonth_CalendarView.getInstanace(); 
    public CTreeView() {
@@ -80,32 +80,32 @@ public class CTreeView extends JFrame implements ActionListener{
       contentPane.add(SchedulePanel);
       SchedulePanel.setLayout(new BorderLayout());
    
-      
-      DefaultMutableTreeNode CalendarRoot=new DefaultMutableTreeNode("Calendar");
-      DefaultMutableTreeNode Mine=new DefaultMutableTreeNode("MyCalendar");
-      DefaultMutableTreeNode Group=new DefaultMutableTreeNode("GroupCalendar");
-      
-      CalendarRoot.add(Mine);
-      CalendarRoot.add(Group);
-      
-      Mine.add(addScheduleData("2017/03/21","과제"));
-      JTree tree=new JTree(CalendarRoot);
-      
-      SchedulePanel.add(tree);
-      tree.setOpaque(false);
+//      
+//      DefaultMutableTreeNode CalendarRoot=new DefaultMutableTreeNode("Calendar");
+//      DefaultMutableTreeNode Mine=new DefaultMutableTreeNode("MyCalendar");
+//      DefaultMutableTreeNode Group=new DefaultMutableTreeNode("GroupCalendar");
+//      
+//      CalendarRoot.add(Mine);
+//      CalendarRoot.add(Group);
+//      
+//      Mine.add(addScheduleData("2017/03/21","과제"));
+//      JTree tree=new JTree(CalendarRoot);
+//      
+//      SchedulePanel.add(tree);
+//      tree.setOpaque(false);
       
       
 
    }
-   
-   private DefaultMutableTreeNode addScheduleData(String date,String ScheduleName){
-	   EventData event=new EventData();
-	   event.setData(6,date);
-	   event.getData(2);
-	   return new DefaultMutableTreeNode(event);
-
-   }
-      
+//   
+//   private DefaultMutableTreeNode addScheduleData(String date,String ScheduleName){
+//	   EventData event=new EventData();
+//	   //event.setData(6,date);
+//	   event.getData(2);
+//	   return new DefaultMutableTreeNode(event);
+//
+//   }
+//      
 
    @Override
    public void actionPerformed(ActionEvent e) {
@@ -117,7 +117,7 @@ public class CTreeView extends JFrame implements ActionListener{
       }
       
       if(e.getSource()==friendgroupBtn){  
-    	  eFGUi.setVisible(true);
+    	  fgUI.setVisible(true);
       }
       
       if(e.getSource()==SettingBtn){
@@ -132,8 +132,8 @@ public class CTreeView extends JFrame implements ActionListener{
       if(e.getSource()==CalendarIcon){
          
          
-         calendar.setGroup(eFGUi);	//DMonth_CalendarView에 EFriend_GroupUI 보내기(그룹 정보 공유)
-         eFGUi.setDMonth_CalendarView(calendar);	//EFriend_GroupUI에 DMonth_CalendarView 보내기(스캐줄 공유)
+         calendar.setGroup(fgUI);	//DMonth_CalendarView에 EFriend_GroupUI 보내기(그룹 정보 공유)
+        fgUI.setDMonth_CalendarView(calendar);	//EFriend_GroupUI에 DMonth_CalendarView 보내기(스캐줄 공유)
          calendar.setVisible(true);
       }
    }
@@ -144,6 +144,6 @@ public class CTreeView extends JFrame implements ActionListener{
 	}
    
    public EFriend_GroupUI geteFGUi(){
-	   return eFGUi;
+	   return fgUI;
    }
 }

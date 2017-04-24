@@ -3,7 +3,6 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
@@ -11,13 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +25,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import DB.JsonMaster;
+import DB.SendToDB;
+import Data.EventData;
+import Data.TagData;
+import Data.UserData;
 
 public class DMonth_CalendarView extends JFrame implements ActionListener{
 	private JPanel contentPane;
@@ -42,34 +48,42 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 	private JButton weekBtn;
 	private JButton todayBtn;
 	
+	private JCheckBox tagbox;
+	
 	private static EFriend_GroupUI group;
 
+	
 
 	public static final DMonth_CalendarView instance =new DMonth_CalendarView(group);
 	
 	private Calendar now= Calendar.getInstance();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					DMonth_CalendarView frame = new DMonth_CalendarView(group);
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private static SendToDB stDB;
+	private static String url,Googleid,result;
+	private JsonMaster jm;
+	
+	private UserData user;//사용자 정보
+	private ArrayList<EventData> allEvents = new ArrayList<EventData>();//모든 스케줄데이터
+	private ArrayList<TagData> tags = new ArrayList<TagData>();//각각 스케줄마다의 태그
+	private TagSet tagSet;
 
-	/**
-	 * Create the frame.
-	 */
+	
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					DMonth_CalendarView frame = new DMonth_CalendarView(group);
+//					frame.setLocationRelativeTo(null);
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
+
 	public DMonth_CalendarView(EFriend_GroupUI group) {
+		
 		setTitle("CalendarView");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,12 +93,55 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
+
+			/* DB에서 스케줄 가져오기*/
+		url = "http://113.198.84.66/Calendar3S/SelectMySchedule.php";
+		Googleid = ALoginUI.getUser().getData(0);
+
+		stDB = new SendToDB(url, Googleid);
+		stDB.start();// DB연결 스레드 시작
+		try {
+			stDB.join();// DB연결이 완료될때까지 대기
+		} catch (InterruptedException e) {
+			System.out.println(e.toString());
+		}
+		result = stDB.getResult();// Json형식의 String값 가져옴
+		System.out.println(result);
+
+		jm = new JsonMaster();
+		jm.onPostExecute("SelectMySchedule", result);
+		allEvents = jm.getEvents();
+
+		for (int i = 0; i < allEvents.size(); i++) {
+			allEvents.get(i).showData();
+		}
+
 		
-//현재 년,월
+			/* DB에서 스케줄 태그가져오기*/
+		url = "http://113.198.84.66/Calendar3S/SelectMyTag.php";
+
+		stDB = new SendToDB(url, Googleid);
+		stDB.start();// DB연결 스레드 시작
+		try {
+			stDB.join();// DB연결이 완료될때까지 대기
+		} catch (InterruptedException e) {
+			System.out.println(e.toString());
+		}
+		result = stDB.getResult();// Json형식의 String값 가져옴
+		System.out.println(result);
+
+		jm = new JsonMaster();
+		jm.onPostExecute("SelectMyTag", result);
+		tags = jm.getTags();
+		
+		tagSet=new TagSet();
+		tagSet.setTags(tags);
+		
+		//현재 년,월
 		year=now.get(Calendar.YEAR);
 		month=now.get(Calendar.MONTH);
 		
-//년
+		//년
 		YearPanel = new JPanel();
 		YearPanel.setBounds(34, 44, 132, 21);
 		contentPane.add(YearPanel);
@@ -166,7 +223,7 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 		});
 		YearPanel.add(UpLabel, BorderLayout.EAST);
 
-//월
+			//월
 		String[] DAY_OF_MONTH= {"1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"};
 		
 		MonthCombo = new JComboBox(DAY_OF_MONTH);
@@ -195,7 +252,7 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 		MonthPanel.add(MonthLabel);
 		contentPane.add(MonthPanel);
 		
-//주
+			//주
 		JPanel WeekPanel = new JPanel();
 		JLabel[] WeekLabels;
 		WeekPanel.setBackground(Color.LIGHT_GRAY);
@@ -217,7 +274,7 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 		WeekPanel.add(WeekLabels[i]);  
 		}
 		
-//일
+			//일
 		JPanel DaysPanel = new JPanel();//day별  판넬
 		DaysPanel.setBackground(Color.LIGHT_GRAY);
 		DaysPanel.setBounds(137, 106, 1023, 585);
@@ -235,16 +292,6 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 		TreeViewIcon.addActionListener(this);
 		TreeViewIcon.setBounds(1163, 17, 48, 48);
 		contentPane.add(TreeViewIcon);
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 192, 203));
-		panel.setBounds(0, 251, 137, 217);
-		contentPane.add(panel);
-		panel.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("그룹별 스케줄");
-		lblNewLabel.setBounds(12, 10, 113, 15);
-		panel.add(lblNewLabel);
 		
 		weekBtn = new JButton("Week");
 		weekBtn.setBounds(980, 42, 97, 23);
@@ -273,9 +320,40 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 		});
 		contentPane.add(todayBtn);
 		
+		 //태그판넬
+		JPanel tagPanel = new JPanel();
+		tagPanel.setBackground(Color.GRAY);
+		tagPanel.setBounds(0, 251, 137, 217);
+		contentPane.add(tagPanel);
+		tagPanel.setLayout(new GridLayout(tags.size(), 1));
+
+		for (int i = 0; i < tags.size(); i++) {
+				tagbox = tags.get(i).getBox();
+				String colorStr=tags.get(i).getData(2);
+				
+			tagbox.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					changeDate();
+				}
+			});
+		
+					
+				JLabel ColorLabel=new JLabel();
+				ColorLabel.setBackground(TagSet.get_Color(colorStr));
+				ColorLabel.setPreferredSize(new Dimension(5,5));
+				ColorLabel.setOpaque(true);
+				
+				tagbox.setLayout(new BorderLayout());
+				tagbox.add(ColorLabel,BorderLayout.EAST);
+			tagPanel.add(tagbox);
+		}	
 	}
 
-/*년 월 날짜 이동함수*/
+
+
+
+	/*년 월 날짜 이동함수*/
 	public void changeDate(){
 		Calendar c= Calendar.getInstance();	
 		
@@ -296,6 +374,8 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 	public void setRange(int startYoil,int lastday,int today){
 		int cnt=1;
 		int value;//판넬 day설정값
+		String[] tagcheck = tagSet.checkTagids();//tagId들만
+		
 		for(int i=0;i<days.length;i++){
 				if(i<(startYoil-1)||(i>(lastday+startYoil-2)))//42개중 day가 표시될 판넬 외에는 0으로 정보를 보내준다.
 					value=0;
@@ -304,30 +384,40 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 				
 				days[i].initInfo();
 				days[i].setValue(year,month,value,i);//기본정보인 년/월/일 정보를 보내주고, 각 판넬에 day 위치 설정				
-				days[i].getVec().clear();//기존에 저장된 스케줄 초기화 시킨후 다시 받는다
-//				days[i].setSchedule();
 				
-				//for(int j=0;j<scheduleVec.size();j++){
-				//	ScheduleData sd=scheduleVec.get(j);
+				Vector<EventData> dayEvents = new Vector<EventData>();
 				
-				//	if((year==sd.year)&&(month==sd.month-1)&&(value==sd.day)){						
-				if(value!=0)	{	
-				days[i].setSchedule();
+				for(int j=0;j<allEvents.size();j++){//오늘자 스케줄을 합치기
+					EventData sd=allEvents.get(j);
+					for(int k=0;k<tagcheck.length;k++){//이벤트데이터 Tagid와 check된  tagid비교
+						if(sd.getData(6).equals(tagcheck[k])
+								&&(year == sd.getYear())
+								&&(month==sd.getMonth()-1)
+								&&(value==sd.getDay())){
+									dayEvents.add(sd);
+						}
+					}
 				}
-				//	}
-				//}
-				if(value==today){
-					days[i].setIsCurrentDate(true);//현재 날짜 표시 check
+				
+				days[i].setVec(dayEvents);
+	
+				if(value!=0)	{	
+					days[i].setSchedule();
 				}
 		}
 	}
 	
+	
+
+
 	//addSchedule
-//	public void addSchedule(ScheduleData scheduleData){
-//		scheduleVec.add(scheduleData);
-//		changeDate();//갱신
-//	}
-//	
+	public void addSchedule(EventData eventData){
+		
+		////////////////////////////// 스케줄추가 db연결
+		allEvents.add(eventData);
+		changeDate();//갱신
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.setVisible(false);
@@ -355,6 +445,30 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 	public EFriend_GroupUI getGroup(){
 		return group;
 	}
+
+	public UserData getUser() {
+		return user;
+	}
+
+	public void setUser(UserData user) {
+		this.user = user;
+	}
+
+
+	public void setTagbox(JCheckBox tagbox) {
+		this.tagbox = tagbox;
+	}
+
+
+
+
+	public ArrayList<TagData> getTags() {
+		// TODO Auto-generated method stub
+		return tags;
+	}
+
+
+
 	
 //	public String getScheduleGroupName(int index){
 //		return scheduleVec.elementAt(index).getGroup();

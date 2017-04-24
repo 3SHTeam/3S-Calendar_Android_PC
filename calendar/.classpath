@@ -28,5 +28,6 @@
 	<classpathentry kind="lib" path="jar/google-oauth-client-java6-1.22.0.jar"/>
 	<classpathentry kind="lib" path="jar/google-oauth-client-jetty-1.22.0.jar"/>
 	<classpathentry kind="lib" path="jar/org.json.jar"/>
+	<classpathentry kind="lib" path="jar/mysql-connector-java-5.1.41-bin.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -7,4 +7,5 @@ public interface DataInfo {
 	public void setData(String[] uData);
 	
 	public String getSendSQLString();
+	public void showData();
 }
