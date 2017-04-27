@@ -14,13 +14,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Vector;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
@@ -45,7 +48,7 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 	private int year,month,today,lastday,startYoil;//년,월,일,달의 마지막일 ,시작요일
 	
 	private JButton TreeViewIcon;
-	private JButton weekBtn;
+	private JButton myPageBtn;
 	private JButton todayBtn;
 	
 	private JCheckBox tagbox;
@@ -96,7 +99,8 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 
 			/* DB에서 스케줄 가져오기*/
 		url = "http://113.198.84.66/Calendar3S/SelectMySchedule.php";
-		Googleid = ALoginUI.getUser().getData(0);
+		setUser(ALoginUI.getUser());
+		Googleid = user.getData(0);
 
 		stDB = new SendToDB(url, Googleid);
 		stDB.start();// DB연결 스레드 시작
@@ -116,26 +120,7 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 			allEvents.get(i).showData();
 		}
 
-		
-			/* DB에서 스케줄 태그가져오기*/
-		url = "http://113.198.84.66/Calendar3S/SelectMyTag.php";
-
-		stDB = new SendToDB(url, Googleid);
-		stDB.start();// DB연결 스레드 시작
-		try {
-			stDB.join();// DB연결이 완료될때까지 대기
-		} catch (InterruptedException e) {
-			System.out.println(e.toString());
-		}
-		result = stDB.getResult();// Json형식의 String값 가져옴
-		System.out.println(result);
-
-		jm = new JsonMaster();
-		jm.onPostExecute("SelectMyTag", result);
-		tags = jm.getTags();
-		
-		tagSet=new TagSet();
-		tagSet.setTags(tags);
+		freshTag();
 		
 		//현재 년,월
 		year=now.get(Calendar.YEAR);
@@ -293,17 +278,17 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 		TreeViewIcon.setBounds(1163, 17, 48, 48);
 		contentPane.add(TreeViewIcon);
 		
-		weekBtn = new JButton("Week");
-		weekBtn.setBounds(980, 42, 97, 23);
-		weekBtn.addActionListener(this);
-		contentPane.add(weekBtn);
+		myPageBtn = new JButton("MyPage");
+		myPageBtn.setBounds(980, 42, 97, 23);
+		myPageBtn.addActionListener(this);
+		contentPane.add(myPageBtn);
 		
 		JButton msgBtn = new JButton("message");
 		msgBtn.setBounds(12, 618, 97, 23);
 		contentPane.add(msgBtn);
 		
-		todayBtn=new JButton("t");
-		todayBtn.setBounds(1100,17,48,48);
+		todayBtn=new JButton("T");
+		todayBtn.setBounds(1100,17,50,48);
 		todayBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -348,6 +333,45 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 				tagbox.add(ColorLabel,BorderLayout.EAST);
 			tagPanel.add(tagbox);
 		}	
+		
+		JButton addTagBtn=new JButton("+태그 추가");
+		addTagBtn.setBounds(10, 480, 110, 30);
+		addTagBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AddTag addt=new AddTag();
+				addt.setVisible(true);
+				
+			}
+		});
+		contentPane.add(addTagBtn);
+
+	}
+
+
+
+
+	private void freshTag() {
+		/* DB에서 스케줄 태그가져오기*/
+		url = "http://113.198.84.66/Calendar3S/SelectMyTag.php";
+
+		stDB = new SendToDB(url, Googleid);
+		stDB.start();// DB연결 스레드 시작
+		try {
+			stDB.join();// DB연결이 완료될때까지 대기
+		} catch (InterruptedException e) {
+			System.out.println(e.toString());
+		}
+		result = stDB.getResult();// Json형식의 String값 가져옴
+		System.out.println(result);
+
+		jm = new JsonMaster();
+		jm.onPostExecute("SelectMyTag", result);
+		tags = jm.getTags();
+		
+		tagSet=new TagSet();
+		tagSet.setTags(tags);
 	}
 
 
@@ -426,9 +450,11 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 			 CTreeView treeView=(CTreeView)CTreeView.getInstanace();
 			treeView.setVisible(true);
 		}
-		if(e.getSource()==weekBtn){
-			DWeek_CalendarView weekCalendar=(DWeek_CalendarView)DWeek_CalendarView.getInstanace();
-			weekCalendar.setVisible(true);
+		if(e.getSource()==myPageBtn){
+			//DWeek_CalendarView weekCalendar=(DWeek_CalendarView)DWeek_CalendarView.getInstanace();
+			//weekCalendar.setVisible(true);
+			FMypage mypage=new FMypage(this.getUser());
+			mypage.setVisible(true);
 		}
 	}
 	
@@ -481,6 +507,88 @@ public class DMonth_CalendarView extends JFrame implements ActionListener{
 //	public String getScheduleDate(int index){
 //		return scheduleVec.elementAt(index).getDate() + " " + scheduleVec.elementAt(index).getStartTime();
 //	}
+	
+	
+	
+	class AddTag extends JDialog {
+		private JPanel contentPane;
+		private JTextField tagName;
+		private JComboBox tagColor;
+		private JButton okBtn;
+		private JButton cancelBtn;
+		
+		public AddTag() {
+			
+			setTitle("Add Tag");
+			setBounds(100, 100, 657, 479);
+			contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+			setContentPane(contentPane);
+			contentPane.setLayout(null);
+			setResizable(false);
+			setLocationRelativeTo(null);
+
+			JLabel tagNameLabel = new JLabel("태그명 : ");
+			tagNameLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+			tagNameLabel.setLocation(114, 94);
+			tagNameLabel.setSize(78, 54);
+			contentPane.add(tagNameLabel);
+
+			JLabel colorLabel = new JLabel("색상 : ");
+			colorLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+			colorLabel.setBounds(114, 186, 74, 54);
+			contentPane.add(colorLabel);
+
+			tagName = new JTextField();
+			tagName.setBounds(223, 110, 267, 27);
+			contentPane.add(tagName);
+			tagName.setColumns(10);
+
+			tagColor = new JComboBox();
+			tagColor.setModel(new DefaultComboBoxModel(new String[] { "BLACK", "RED", "ORANGE", "YELLOW", "GREEN",
+					"BLUE", "PINK", "CYAN", "MAGENTA", "GRAY" }));
+			tagColor.setBounds(223, 202, 267, 27);
+			contentPane.add(tagColor);
+
+			okBtn = new JButton("추가");
+			okBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String name = tagName.getText();
+					String color = (String) tagColor.getSelectedItem();
+					insertTag(name, color);
+					//freshTag();
+					dispose();
+				}
+			});
+			okBtn.setBounds(173, 302, 122, 38);
+			contentPane.add(okBtn);
+
+			cancelBtn = new JButton("취소");
+			cancelBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+				}
+			});
+			cancelBtn.setBounds(368, 302, 122, 38);
+			contentPane.add(cancelBtn);
+		}
+		
+		public void insertTag(String name, String color) {
+			/* DB에 태그 삽입하기*/
+			url = "http://113.198.84.66/Calendar3S/InsertTag.php";
+			Googleid = user.getData(0);
+			
+			String message = "'"+Googleid+"','"+name+"','"+color+"','맑은고딕','15'";
+
+			stDB = new SendToDB(url, message);
+			stDB.start();// DB연결 스레드 시작
+			try {
+				stDB.join();// DB연결이 완료될때까지 대기
+			} catch (InterruptedException e) {
+				System.out.println(e.toString());
+			}	
+		}
+	}
 }
 
 

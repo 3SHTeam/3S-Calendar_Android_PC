@@ -2,7 +2,7 @@ package Data;
 
 public class EventData implements DataInfo{
 	private String[] uData = new String[9];
-	private String Sid,SMaster=null,Sname=null,Place=null;
+	private String Sid,SMaster=null,Sname=null,Place=null,description=null;
 	private String StartTime="0000",EndTime="0000",TagId,GoogleSId,GId;
 	
 	private int year,month,day;
@@ -22,7 +22,7 @@ public class EventData implements DataInfo{
 		this.TagId=TagId;
 		this.GoogleSId=GoogleSId;
 		this.GId=GId;
-		
+
 		
 		setData(0,Sid);
 		setData(1,SMaster);

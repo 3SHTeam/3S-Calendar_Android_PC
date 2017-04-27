@@ -1,86 +1,130 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+
+import Data.UserData;
 
 public class FMypage extends JFrame {
 
-   private JPanel contentPane;
-   private JTextField NicktextField;
-   private JTextField phone;
-   private JTextField comment;
+	private JPanel contentPane;
+	private UserData user;
+	private JLabel googleID;
+	private JLabel name;
+	private JLabel nickname;
+	private JLabel gender;
+	private JLabel birth;
+	private JLabel phone;
+	private JLabel comment;
 
+	
+	public FMypage(UserData user) {
+		
+		this.setUser(user);
+		
+		init();
+		googleID.setText(user.getData(0));
+		name.setText(user.getData(1));
+		nickname.setText(user.getData(3));
+		gender.setText(user.getData(2));
+		birth.setText(user.getData(4));
+		phone.setText(user.getData(5));
+		comment.setText(user.getData(6));
 
-   /**
-    * Create the frame.
-    */
-   public FMypage() {
-      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      setBounds(100, 100, 450, 300);
-      contentPane = new JPanel();
-      contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-      setContentPane(contentPane);
-      contentPane.setLayout(null);
-      setLocationRelativeTo(null);
-      
-      JPanel panel = new JPanel();
-      panel.setBackground(Color.GRAY);
-      panel.setBounds(44, 38, 133, 140);
-      contentPane.add(panel);
-      
-      JButton btnNewButton = new JButton("New button");
-      btnNewButton.setBounds(65, 198, 97, 23);
-      contentPane.add(btnNewButton);
-      
-      JLabel nameLabel = new JLabel("이름:");
-      nameLabel.setBounds(189, 38, 57, 15);
-      contentPane.add(nameLabel);
-      
-      JLabel name = new JLabel("New label");
-      name.setBounds(277, 38, 57, 15);
-      contentPane.add(name);
-      
-      JLabel nicknamelabel = new JLabel("닉네임:");
-      nicknamelabel.setBounds(189, 66, 57, 15);
-      contentPane.add(nicknamelabel);
-      
-      NicktextField = new JTextField();
-      NicktextField.setBounds(262, 63, 116, 21);
-      contentPane.add(NicktextField);
-      NicktextField.setColumns(10);
-      
-      JLabel emailLabel = new JLabel("이메일:");
-      emailLabel.setBounds(189, 96, 57, 15);
-      contentPane.add(emailLabel);
-      
-      JLabel email = new JLabel("New label");
-      email.setBounds(277, 94, 57, 15);
-      contentPane.add(email);
-      
-      JLabel phoneLabel = new JLabel("전화번호:");
-      phoneLabel.setBounds(189, 131, 57, 15);
-      contentPane.add(phoneLabel);
-      
-      phone = new JTextField();
-      phone.setBounds(262, 125, 116, 21);
-      contentPane.add(phone);
-      phone.setColumns(10);
-      
-      JLabel commentLabel = new JLabel("한마디:");
-      commentLabel.setBounds(189, 166, 57, 15);
-      contentPane.add(commentLabel);
-      
-      comment = new JTextField();
-      comment.setBounds(262, 163, 116, 21);
-      contentPane.add(comment);
-      comment.setColumns(10);
-   }
+	}
+
+	public FMypage() {
+		init();
+	}
+
+	private void init() {
+		setTitle("MyPage");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 741, 490);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(46, 58, 200, 323);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JPanel picture = new JPanel();
+		picture.setBackground(Color.GRAY);
+		picture.setBounds(17, 40, 166, 172);
+		panel.add(picture);
+		
+		JButton okButton = new JButton("확인");
+		okButton.setBounds(38, 243, 125, 29);
+		panel.add(okButton);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(289, 58, 373, 323);
+		contentPane.add(panel_1);
+		panel_1.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JLabel googleIdLabel=new JLabel("아이디 :");
+		googleIdLabel.setFont(new Font("굴림", Font.PLAIN, 17));
+		panel_1.add(googleIdLabel);
+		
+		googleID = new JLabel();
+		panel_1.add(googleID);
+		
+		JLabel nameLabel = new JLabel("이름 :");
+		nameLabel.setFont(new Font("굴림", Font.PLAIN, 17));
+		panel_1.add(nameLabel);
+		
+		name = new JLabel();
+		panel_1.add(name);
+	
+		JLabel nickLabel = new JLabel("닉네임");
+		nickLabel.setFont(new Font("굴림", Font.PLAIN, 17));
+		panel_1.add(nickLabel);
+		
+		nickname = new JLabel();
+		panel_1.add(nickname);
+		
+		JLabel genderLabel = new JLabel("성별");
+		genderLabel.setFont(new Font("굴림", Font.PLAIN, 17));
+		panel_1.add(genderLabel);
+		
+		gender = new JLabel();
+		gender.setFont(new Font("굴림", Font.PLAIN, 17));
+		panel_1.add(gender);
+		
+		JLabel birthLabel = new JLabel("생일");
+		birthLabel.setFont(new Font("굴림", Font.PLAIN, 17));
+		panel_1.add(birthLabel);
+		
+		birth = new JLabel();
+		panel_1.add(birth);
+		
+		JLabel phoneLabel = new JLabel("전화번호:");
+		phoneLabel.setFont(new Font("굴림", Font.PLAIN, 17));
+		panel_1.add(phoneLabel);
+		
+		phone = new JLabel();
+		panel_1.add(phone);
+		
+		JLabel commentLabel = new JLabel("한마디:");
+		commentLabel.setFont(new Font("굴림", Font.PLAIN, 17));
+		panel_1.add(commentLabel);
+		
+		comment = new JLabel();
+		panel_1.add(comment);
+	}
+
+	public void setUser(UserData user) {
+		this.user = user;
+	}
 }
