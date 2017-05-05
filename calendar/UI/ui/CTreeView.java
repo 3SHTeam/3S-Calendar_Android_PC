@@ -1,20 +1,11 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.SystemColor;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import Data.EventData;
 
@@ -30,9 +21,9 @@ public class CTreeView extends JFrame implements ActionListener{
  
    public static final CTreeView instance =new CTreeView();
    
-   private EFriend_GroupUI fgUI = new EFriend_GroupUI();
+   private EFriend_GroupMain fgUI;
 
-   DMonth_CalendarView calendar=(DMonth_CalendarView) DMonth_CalendarView.getInstanace(); 
+   DMonth_CalendarMain calendar=(DMonth_CalendarMain) DMonth_CalendarMain.getInstanace(); 
    public CTreeView() {
 	   setLocationRelativeTo(null);
 	   setResizable(false);
@@ -133,7 +124,7 @@ public class CTreeView extends JFrame implements ActionListener{
          
          
          calendar.setGroup(fgUI);	//DMonth_CalendarView에 EFriend_GroupUI 보내기(그룹 정보 공유)
-        fgUI.setDMonth_CalendarView(calendar);	//EFriend_GroupUI에 DMonth_CalendarView 보내기(스캐줄 공유)
+      //  fgUI.setDMonth_CalendarView(calendar);	//EFriend_GroupUI에 DMonth_CalendarView 보내기(스캐줄 공유)
          calendar.setVisible(true);
       }
    }
@@ -143,7 +134,7 @@ public class CTreeView extends JFrame implements ActionListener{
 		return instance;
 	}
    
-   public EFriend_GroupUI geteFGUi(){
+   public EFriend_GroupMain geteFGUi(){
 	   return fgUI;
    }
 }

@@ -1,13 +1,12 @@
 package ui;
 //
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
+import javax.swing.*;
+
+import org.apache.commons.codec.binary.Hex;
 
 import Data.TagData;
 
@@ -19,7 +18,9 @@ public class TagSet {
 	public TagSet(){
 
 	}
-	public static Color get_Color(String c) {//String->Color
+	
+	//String ¹®ÀÚ->color
+	public static Color strToColor(String c) {
 		Color color;
 		try {
 		    Field field = Class.forName("java.awt.Color").getField(c);
@@ -30,6 +31,14 @@ public class TagSet {
 		return color;
 	}
 	
+	//Color->Hex
+	public static String colorToHex(Color c){
+		String rgbToHex="0x"+Integer.toHexString(c.getRed())
+						+Integer.toHexString(c.getGreen())
+						+Integer.toHexString(c.getBlue());
+		
+		return rgbToHex;
+	}
 
 	public String[] checkTagids() {
 		String[] tagIds = new String[tags.size()];
@@ -53,5 +62,14 @@ public class TagSet {
 	public void setTags(ArrayList<TagData> tags) {
 		this.tags=tags;
 		
+	}
+	
+	//String(Hex)->Color
+	public static Color hex2Rgb(String colorStr) {
+		int hex = Integer.decode(colorStr);
+	    int r = (hex & 0xFF0000) >> 16;
+	    int g = (hex & 0xFF00) >> 8;
+	    int b = (hex & 0xFF);
+	    return new Color(r,g,b);
 	}
 }

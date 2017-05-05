@@ -2,28 +2,18 @@ package ui;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import DB.JsonMaster;
 import DB.SendToDB;
 import Data.UserData;
 
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.Checkbox;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import java.awt.Color;
-import javax.swing.JPasswordField;
+import java.awt.*;
+import java.awt.event.*;
 
 public class ALoginUI extends JFrame {
-	private EFriend_GroupUI fgUI = new EFriend_GroupUI();
-	private DMonth_CalendarView calendar;
+	private DMonth_CalendarMain calendar;
 	private JPanel contentPane;
 	private JTextField Googleid;
 	private JButton OKBtn;
@@ -103,13 +93,13 @@ public class ALoginUI extends JFrame {
 					// BFirstLoginUI login=new BFirstLoginUI();
 					if (setLoginData()) {// Login data확인 및 저장
 						dispose();
-						calendar = (DMonth_CalendarView) DMonth_CalendarView.getInstanace();
-						calendar.setGroup(fgUI); // DMonth_CalendarView에
-													// EFriend_GroupUI 보내기(그룹 정보
-													// 공유)
-						fgUI.setDMonth_CalendarView(calendar); // EFriend_GroupUI에
-																// DMonth_CalendarView
-																// 보내기(스캐줄 공유)
+						calendar = (DMonth_CalendarMain) DMonth_CalendarMain.getInstanace();
+//						calendar.setGroup(fgUI); // DMonth_CalendarView에
+//													// EFriend_GroupUI 보내기(그룹 정보
+//													// 공유)
+//						fgUI.setDMonth_CalendarView(calendar); // EFriend_GroupUI에
+//																// DMonth_CalendarView
+//																// 보내기(스캐줄 공유)
 						calendar.setVisible(true);
 						// login.setVisible(true);
 					}
@@ -147,22 +137,16 @@ public class ALoginUI extends JFrame {
 		jm.onPostExecute("SelectMyProfile", result);
 
 		if (jm.getUser() == null) {
-			// 로그인 실패
-			// 로그인 실패 창이 뜬다.
-			// 비밀번호 텍스트 필드만 초기화
+			JOptionPane.showMessageDialog(null, "로그인을 실패했습니다.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+			Googlepw.setText("");		
 			return false;
 		} else {
-			// 로그인 성공
-			// 로그인 성공 창이 뜬다.
-			// 달력으로 이동하기
+
 			this.setUser(jm.getUser());
 			return true;
 		}
 	}
 
-	public EFriend_GroupUI geteFGUi() {
-		return fgUI;
-	}
 
 	public static UserData getUser() {
 		return user;

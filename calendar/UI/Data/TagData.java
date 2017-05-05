@@ -2,38 +2,32 @@ package Data;
 
 import javax.swing.JCheckBox;
 
-public class TagData implements DataInfo{
+public class TagData implements DataInfo {
 	private String[] uData = new String[8];
-	private JCheckBox box;
-	private String Tagid,Tag_name=null,Color="BLACK",Font="맑은 고딕",Size="18",Gid;
-	
-	public TagData(String Tagid, String Tag_name, String Color, String Font,
-							String Size, String Gid){
-		this.Tagid=Tagid;
-		this.Tag_name=Tag_name;
-		this.Color=Color;
-		this.Font=Font;
-		this.Size=Size;
-		this.Gid=Gid;
-		
-		setData(0,Tagid);
-		setData(1,Tag_name);
-		setData(2,Color);
-		setData(3,Font);
-		setData(4,Size);
-		setData(5,Gid);
+
+	private JCheckBox box;// 태그들을 체크박스로
+
+
+	public TagData(String Tagid, String Tag_name, String Color, String Font, String Size, String Gid) {
+
+		setData(0, Tagid);
+		setData(1, Tag_name);
+		setData(2, Color);
+		setData(3, Font);
+		setData(4, Size);
+		setData(5, Gid);
 		makebox();
 	}
 
 	private void makebox() {
 		this.box = new JCheckBox(this.uData[1]);
-		box.setSelected(true);	
+		box.setSelected(true);
 	}
 
-	public boolean checkStatus(){
+	public boolean checkStatus() {
 		return box.isSelected();
 	}
-	
+
 	@Override
 	public String[] getData() {
 		return uData;
@@ -56,9 +50,9 @@ public class TagData implements DataInfo{
 
 	@Override
 	public String getSendSQLString() {
-        return null;
+		String sql = "'" + uData[1] + "','" + uData[2] + "','" + uData[3] + "','" + uData[4] + "'";
+		return sql;
 	}
-
 
 	@Override
 	public void showData() {

@@ -2,9 +2,7 @@ package Data;
 
 public class EventData implements DataInfo{
 	private String[] uData = new String[9];
-	private String Sid,SMaster=null,Sname=null,Place=null,description=null;
-	private String StartTime="0000",EndTime="0000",TagId,GoogleSId,GId;
-	
+
 	private int year,month,day;
 
 	public EventData(){
@@ -13,16 +11,6 @@ public class EventData implements DataInfo{
 	
 	public EventData(String Sid, String SMaster, String Sname, String Place,
 							String StartTime, String EndTime,String TagId,String GoogleSId,String GId){
-		this.Sid=Sid;
-		this.SMaster=SMaster;
-		this.Sname=Sname;
-		this.Place=Place;
-		this.StartTime=StartTime;
-		this.EndTime=EndTime;
-		this.TagId=TagId;
-		this.GoogleSId=GoogleSId;
-		this.GId=GId;
-
 		
 		setData(0,Sid);
 		setData(1,SMaster);
@@ -80,10 +68,8 @@ public class EventData implements DataInfo{
 
 	@Override
 	public String getSendSQLString() {
-		String sql = "schedules(SMaster, Sname, Place, StartTime, EndTime, TagId, GoogleSId, GId) Values ";
-
-        sql += "('" + uData[1] + "','" + uData[2] + "','"+ uData[3] + "','"
-                + uData[4] + "','" + uData[5]+ "','" + uData[6]+ "','" + uData[7]+ "','" + uData[8] + "')";
+		String sql = "'" + uData[1] + "','" + uData[2] + "','"+ uData[3] + "','"
+                + uData[4] + "','" + uData[5] +  "'";
         return sql;
 	}
 
@@ -99,7 +85,7 @@ public class EventData implements DataInfo{
 		System.out.println("TagId : " + uData[6]);
 		System.out.println("GoogleSId : " + uData[7]);
 		System.out.println("GId : " + uData[8]);
-		System.out.println("Date : " + year + "/" +  + month + "/" + day);
+		System.out.println("Date : " + year + "/" + +month + "/" + day);
 	}
 
 }

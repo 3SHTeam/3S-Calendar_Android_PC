@@ -1,18 +1,19 @@
 package Data;
 
-public class UserData implements DataInfo{
-	private String[] uData = new String[8];
-	
-	public UserData(String Googleid, String name, String gender, String nickname,
-							String birth, String phone ,String comment ,String FBuId){
-		setData(0,Googleid);
-		setData(1,name);
-		setData(2,gender);
-		setData(3,nickname);
-		setData(4,birth);
-		setData(5,phone);
-		setData(6,comment);
-		setData(7,FBuId);
+public class UserData implements DataInfo {
+	private String[] uData = new String[9];
+
+	public UserData(String Googleid, String name, String gender, String nickname, String birth, String phone,
+			String comment, String FBuId, String FBToken) {
+		setData(0, Googleid);
+		setData(1, name);
+		setData(2, gender);
+		setData(3, nickname);
+		setData(4, birth);
+		setData(5, phone);
+		setData(6, comment);
+		setData(7, FBuId);
+		setData(8, FBToken);
 	}
 
 	@Override
@@ -37,9 +38,10 @@ public class UserData implements DataInfo{
 
 	@Override
 	public String getSendSQLString() {
-        return null;
+		String sql = "'" + uData[1] + "','" + uData[2] + "','" + uData[3] + "','" + uData[4] + "'" + uData[5] + "'"
+				+ uData[6] + "'";
+		return sql;
 	}
-
 
 	@Override
 	public void showData() {

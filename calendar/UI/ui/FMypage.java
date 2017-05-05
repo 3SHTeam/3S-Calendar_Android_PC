@@ -1,13 +1,11 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import Data.UserData;
@@ -18,15 +16,15 @@ public class FMypage extends JFrame {
 	private UserData user;
 	private JLabel googleID;
 	private JLabel name;
-	private JLabel nickname;
+	private JTextField nickname;
 	private JLabel gender;
 	private JLabel birth;
 	private JLabel phone;
-	private JLabel comment;
+	private JTextField comment;
 
 	
 	public FMypage(UserData user) {
-		
+		setLocationRelativeTo(null);
 		this.setUser(user);
 		
 		init();
@@ -66,6 +64,12 @@ public class FMypage extends JFrame {
 		
 		JButton okButton = new JButton("확인");
 		okButton.setBounds(38, 243, 125, 29);
+		okButton.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();		
+			}
+		});
 		panel.add(okButton);
 		
 		JPanel panel_1 = new JPanel();
@@ -87,14 +91,14 @@ public class FMypage extends JFrame {
 		name = new JLabel();
 		panel_1.add(name);
 	
-		JLabel nickLabel = new JLabel("닉네임");
+		JLabel nickLabel = new JLabel("닉네임 :");
 		nickLabel.setFont(new Font("굴림", Font.PLAIN, 17));
 		panel_1.add(nickLabel);
 		
-		nickname = new JLabel();
+		nickname = new JTextField();
 		panel_1.add(nickname);
 		
-		JLabel genderLabel = new JLabel("성별");
+		JLabel genderLabel = new JLabel("성별 :");
 		genderLabel.setFont(new Font("굴림", Font.PLAIN, 17));
 		panel_1.add(genderLabel);
 		
@@ -102,25 +106,25 @@ public class FMypage extends JFrame {
 		gender.setFont(new Font("굴림", Font.PLAIN, 17));
 		panel_1.add(gender);
 		
-		JLabel birthLabel = new JLabel("생일");
+		JLabel birthLabel = new JLabel("생일 :");
 		birthLabel.setFont(new Font("굴림", Font.PLAIN, 17));
 		panel_1.add(birthLabel);
 		
 		birth = new JLabel();
 		panel_1.add(birth);
 		
-		JLabel phoneLabel = new JLabel("전화번호:");
+		JLabel phoneLabel = new JLabel("전화번호 :");
 		phoneLabel.setFont(new Font("굴림", Font.PLAIN, 17));
 		panel_1.add(phoneLabel);
 		
 		phone = new JLabel();
 		panel_1.add(phone);
 		
-		JLabel commentLabel = new JLabel("한마디:");
+		JLabel commentLabel = new JLabel("한마디 :");
 		commentLabel.setFont(new Font("굴림", Font.PLAIN, 17));
 		panel_1.add(commentLabel);
 		
-		comment = new JLabel();
+		comment = new JTextField();
 		panel_1.add(comment);
 	}
 

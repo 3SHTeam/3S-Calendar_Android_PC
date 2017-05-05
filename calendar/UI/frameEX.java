@@ -13,15 +13,14 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import Data.TagData;
+import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JList;
 
 public class frameEX extends JFrame {
-
-	private JPanel contentPane;
-	private JTextField tagName;
-	private JComboBox tagColor;
-	private JButton okBtn;
-	private JButton cancelBtn;
 	private TagData tagData;
+	private JLabel groupName;
 
 	/**
 	 * Launch the application.
@@ -43,54 +42,25 @@ public class frameEX extends JFrame {
 	 * Create the frame.
 	 */
 	public frameEX() {
-		setTitle("Add Tag");
+		setTitle("MemberList");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 657, 479);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		setBounds(100, 100, 542, 754);
 		setResizable(false);
+		getContentPane().setLayout(null);
 		
-		JLabel tagNameLabel=new JLabel("태그명 : ");
-		tagNameLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		tagNameLabel.setLocation(114, 94);
-		tagNameLabel.setSize(78, 54);
-		contentPane.add(tagNameLabel);
+		groupName = new JLabel();
+		groupName.setFont(new Font("MD개성체", Font.PLAIN, 25));
+		groupName.setText("그룹명");
+		groupName.setBounds(17, 31, 202, 56);
+		getContentPane().add(groupName);
 		
-		JLabel colorLabel = new JLabel("색상 : ");
-		colorLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		colorLabel.setBounds(114, 186, 74, 54);
-		contentPane.add(colorLabel);
+		JList Memberlist = new JList();
+		Memberlist.setBounds(39, 102, 437, 511);
+		getContentPane().add(Memberlist);
 		
-		tagName = new JTextField();
-		tagName.setBounds(223, 110, 267, 27);
-		contentPane.add(tagName);
-		tagName.setColumns(10);
-		
-		tagColor = new JComboBox();
-		tagColor.setModel(new DefaultComboBoxModel(new String[] {"BLACK","RED", "ORANGE", "YELLOW", "GREEN", "BLUE","PINK","CYAN","MAGENTA","GRAY"}));
-		tagColor.setBounds(223, 202, 267, 27);
-		contentPane.add(tagColor);
-		
-		okBtn = new JButton("추가");
-		okBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tagData.setData(1,tagName.getText());
-				tagData.setData(2,(String)tagColor.getSelectedItem());
-			}
-		});
-		okBtn.setBounds(173, 302, 122, 38);
-		contentPane.add(okBtn);
-		
-		cancelBtn = new JButton("취소");
-		cancelBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		cancelBtn.setBounds(368, 302, 122, 38);
-		contentPane.add(cancelBtn);
+		JButton okButton = new JButton("확인");
+		okButton.setBounds(202, 644, 125, 29);
+		getContentPane().add(okButton);
 
 	}
 }

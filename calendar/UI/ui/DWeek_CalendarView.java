@@ -1,21 +1,11 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.*;
+import javax.swing.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 //setWeek(Calendar c)로 입력 받은 주의 날짜를 얻어 weekArr를 설정해준다
@@ -186,7 +176,7 @@ public class DWeek_CalendarView extends JFrame implements ActionListener{
 			treeView.setVisible(true);
 		}
 		if(e.getSource()==monthBtn){
-			DMonth_CalendarView monthCalendar=(DMonth_CalendarView)DMonth_CalendarView.getInstanace();
+			DMonth_CalendarMain monthCalendar=(DMonth_CalendarMain)DMonth_CalendarMain.getInstanace();
 			monthCalendar.setVisible(true);
 		}
 	}

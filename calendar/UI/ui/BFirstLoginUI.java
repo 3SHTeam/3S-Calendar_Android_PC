@@ -1,16 +1,10 @@
 package ui;
 
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class BFirstLoginUI extends JFrame {
@@ -24,7 +18,7 @@ public class BFirstLoginUI extends JFrame {
    private JTextField NicknameField;
    private JTextField NumberField;
    private JTextArea CommentField;
-   private JoinData joinData;//Join할때 받을 변수들
+ //  private JoinData joinData;//Join할때 받을 변수들
 
    /**
     * Create the frame.
@@ -146,15 +140,15 @@ public class BFirstLoginUI extends JFrame {
 	      contentPane.add(startBtn);
 	   }
    public void setJoinData(){
-	   joinData=new JoinData();   
-	   joinData.setGoogleId(GoogleidField.getText());
-	   joinData.setGooglePw(GooglepwField.getText());
-	   joinData.setName(NameField.getText());
-	   joinData.setGender(GenderField.getText());//콤보나 탭이용
-	   //joinData.setBirth()BirthField.getText());int로형변환
-	   joinData.setNickname(NicknameField.getText());
-	   //joinData.setPhoneNum(NumberField.getText());
-	   joinData.setComment(CommentField.getText());
+//	   joinData=new JoinData();   
+//	   joinData.setGoogleId(GoogleidField.getText());
+//	   joinData.setGooglePw(GooglepwField.getText());
+//	   joinData.setName(NameField.getText());
+//	   joinData.setGender(GenderField.getText());//콤보나 탭이용
+//	   //joinData.setBirth()BirthField.getText());int로형변환
+//	   joinData.setNickname(NicknameField.getText());
+//	   //joinData.setPhoneNum(NumberField.getText());
+//	   joinData.setComment(CommentField.getText());
 	   
    }
   

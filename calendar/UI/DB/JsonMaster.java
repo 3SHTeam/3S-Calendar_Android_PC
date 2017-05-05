@@ -1,12 +1,14 @@
 package DB;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import Data.EventData;
+import Data.GroupData;
 import Data.TagData;
 import Data.UserData;
 
@@ -15,15 +17,27 @@ public class JsonMaster {
 	private String result = "";
 	private UserData user;
 	private ArrayList<TagData> tags = new ArrayList<TagData>();
+	private Vector <GroupData>GroupVec=new Vector<GroupData>();
+	private ArrayList<String> userIds_Arr = new ArrayList<String>();// 회원 아이디
 
 	public String getResult() {return result;}
 	public void setResult(String result) {this.result = result;}
+	
 	public ArrayList<EventData> getEvents() {return events;}
 	public void setEvents(ArrayList<EventData> events) {this.events = events;}
+	
 	public UserData getUser() {return user;}
 	public void setUser(UserData user) {this.user = user;}
+	
 	public ArrayList<TagData> getTags() {return tags;}
 	public void setTags(ArrayList<TagData> tags) {this.tags = tags;}
+	
+	public Vector<GroupData> getGroupVec() {return GroupVec;}
+	public void setGroupVec(Vector<GroupData> groupVec) {GroupVec = groupVec;}
+	
+	public ArrayList<String> getUserIds_Arr() {return userIds_Arr;}
+	public void setUserIds_Arr(ArrayList<String> userIds_Arr) {this.userIds_Arr = userIds_Arr;}
+	
 	
 	public void onPostExecute(String php, String str){
 		switch(php){
@@ -38,10 +52,108 @@ public class JsonMaster {
 		case "SelectMyTag":
 			selectMyTag(str);
 			break;
+			
+		case "SelectMyGroup":
+			selectMyGroup(str);
+			break;
+			
+		case "SelectGroupMember":
+			selectGroupMember(str);
+			break;
+			
+		case "SelectMakeGroup":
+			selectMakeGroup(str);
+			break;
 		}
      }
 	
 	
+	private void selectMakeGroup(String str) {
+		String Gid;
+		try{
+            JSONObject root = new JSONObject(str);
+            if(root.get("rownum").equals("0")) {
+            	this.result = null;
+            	System.out.println("그룹 없음!");
+            	return;
+            }
+            
+            JSONArray ja = root.getJSONArray("result");
+
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                Gid = jo.getString("Gid");
+                
+                System.out.println(Gid);
+                   
+                this.result = Gid;  
+            }
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+	}
+	private void selectGroupMember(String str) {
+        String GroupMemberIds;
+        
+        try{
+            JSONObject root = new JSONObject(str);
+            if(root.get("rownum").equals("0")) {
+            	this.userIds_Arr = null;
+            	System.out.println("그룹 없음!");
+            	return;
+            }
+            
+            JSONArray ja = root.getJSONArray("result");
+
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                GroupMemberIds = jo.getString("Googleid");
+                
+                System.out.println(GroupMemberIds);
+                   
+                this.userIds_Arr.add(GroupMemberIds);   
+            }
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+		
+		
+	}
+	private void selectMyGroup(String str) {
+		String gid;
+        String name;
+        String comment; 
+        String GMaster;
+        
+        GroupData group;
+        try{
+            JSONObject root = new JSONObject(str);
+            if(root.get("rownum").equals("0")) {
+            	this.GroupVec = null;
+            	System.out.println("그룹 없음!");
+            	return;
+            }
+            
+            JSONArray ja = root.getJSONArray("result");
+
+            for(int i=0; i<ja.length(); i++){
+                JSONObject jo = ja.getJSONObject(i);
+                gid = jo.getString("Gid");
+                name= jo.getString("Group_name");
+                comment = jo.getString("Group_comment");
+                GMaster = jo.getString("GMaster");
+                
+                System.out.println(gid + " , " + name + " , " + comment
+                      + " , " + GMaster);
+                
+                group= new GroupData(gid, name, comment, GMaster);      
+                this.GroupVec.add(group);   
+            }
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+		
+	}
 	private void selectMyTag(String str) {
 		String Tagid;
         String Tag_name;
@@ -90,6 +202,7 @@ public class JsonMaster {
         String phone;
         String comment;
         String FBuId;
+        String FBToken;
         
         EventData event;
         try{
@@ -112,12 +225,13 @@ public class JsonMaster {
                 phone = jo.getString("phone");
                 comment = jo.getString("comment");
                 FBuId = jo.getString("FBuId");
+                FBToken = jo.getString("FBToken");
                 
                 System.out.println(Googleid + " , " + name + " , " + gender
                       + " , " + nickname + " , " + birth + " , " + phone
-                      + " , " + comment + " , " + FBuId );
+                      + " , " + comment + " , " + FBuId + " , " + FBToken);
                 
-                this.user = new UserData(Googleid, name, gender, nickname, birth, phone, comment, FBuId);           
+                this.user = new UserData(Googleid, name, gender, nickname, birth, phone, comment, FBuId, FBToken);           
             }
         }catch(JSONException e){
             e.printStackTrace();
@@ -172,7 +286,6 @@ public class JsonMaster {
             e.printStackTrace();
         }
 	}
-	
-	 
+
 	 
 }

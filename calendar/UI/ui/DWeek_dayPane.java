@@ -1,16 +1,12 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.awt.*;
+
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
 
 import javax.swing.GroupLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.GroupLayout.Alignment;
 
 public class DWeek_dayPane extends JPanel implements MouseListener{
