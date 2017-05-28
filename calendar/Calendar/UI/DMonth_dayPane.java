@@ -1,8 +1,9 @@
-package ui;
+package Calendar.UI;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -13,10 +14,11 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Data.EventData;
-import Data.TagData;
+import Calendar.Data.EventData;
+import Calendar.Data.TagData;
 
-public class DMonth_dayPane extends JPanel implements MouseListener,ActionListener{
+
+public class DMonth_dayPane extends JPanel implements ActionListener{
 	
 	private JPanel dayInfoPanel;//하루 전체 정보판넬 
 	private JPanel dayNumPanel;
@@ -38,8 +40,8 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 	
 	int position;
 	
-	private DMonth_CalendarMain calendarMain;
-	ShowDayEvents showDayEvents;//상세보기 새창
+	private DMonth_CalendarMain calendar;
+	DShowDayEvents showDayEvents;//상세보기 새창
 	
 	private EventData event;
 	
@@ -47,23 +49,20 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 	private Vector <EventData>dayScheduleVec=new Vector<EventData>();
 	private ArrayList<TagData> tags = new ArrayList<TagData>();
 	
-	public Vector<EventData> getVec() {
-		return dayScheduleVec;
-	}
-	public void setVec(Vector<EventData> vec) {
-		dayScheduleVec = vec;
-	}
+	public ArrayList<TagData> getTags() {return tags;}
+	public Vector<EventData> getVec() {return dayScheduleVec;}
+	public void setVec(Vector<EventData> vec) {dayScheduleVec = vec;}
 	
-	public DMonth_dayPane(DMonth_CalendarMain calendar, EFriend_GroupMain group) {
-		
-		super();
-		GetGoogle gg = new GetGoogle();
+	public DMonth_dayPane(DMonth_CalendarMain calendar,EFriend_GroupMain group) {
+		//GetGoogle gg = new GetGoogle();
 		dayLabel=new JLabel();
+		dayLabel.setFont(new Font("맑은 고딕",Font.BOLD,16));
 		dayLabel.setHorizontalAlignment(JLabel.RIGHT);
 		for(int i=0;i<4;i++){
 			ScheduleLabel[i] = new JLabel();
+			ScheduleLabel[i].setFont(new Font("맑은 고딕",Font.BOLD,16));
 		}
-		this.calendarMain=calendar;
+		this.calendar=calendar;
 		tags=calendar.getTags();
 		this.setOpaque(false);
 		
@@ -83,7 +82,20 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 		dayInfoPanel.add(schedulePanel, BorderLayout.CENTER);
 		
 		dayInfoPanel.setBackground(Color.WHITE);
-		dayInfoPanel.addMouseListener(this);
+		dayInfoPanel.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(!strDay.equals("")){
+					if(e.getButton()==3){//오른쪽 마우스 클릭
+						popup.show((Component)e.getSource(), e.getX(), e.getY());
+					}
+					else
+					{
+						showDayEvents=new DShowDayEvents(getDate(),dayScheduleVec);
+						showDayEvents.setVisible(true);
+					}
+				}		
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -119,6 +131,7 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 		for(int i=0;i<ScheduleLabel.length;i++){
 			ScheduleLabel[i].setHorizontalAlignment(JLabel.CENTER);
 			ScheduleLabel[i].setText("");
+			ScheduleLabel[i].setBackground(Color.WHITE);
 		}
 		
 		dayScheduleVec.clear();
@@ -137,11 +150,11 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 			strDay="";
 		}
 		else{
-			if(month>0&&month<10){
+			if(month>=0&&month<9){
 				strMonth="0"+(month+1);
 			}
 			else{
-				strMonth=String.valueOf(month);
+				strMonth=String.valueOf(month+1);
 			}
 
 			if(day>0&&day<10){
@@ -176,7 +189,8 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 				ScheduleLabel[i].setText(dayScheduleVec.get(i).getData(2));			
 										
 					if (event.getData(6).equals(tag.getData(0))) {
-						ScheduleLabel[i].setForeground(TagSet.hex2Rgb(tag.getData(2)));
+						ScheduleLabel[i].setBackground(TagColorSet.hex2Rgb(tag.getData(2)));
+						ScheduleLabel[i].setOpaque(true);
 						}
 				}
 			}
@@ -188,7 +202,7 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 					TagData tag = tags.get(j);
 					ScheduleLabel[i].setText(dayScheduleVec.get(i).getData(2));//스케줄명	
 					if (event.getData(6).equals(tag.getData(0))) {
-						ScheduleLabel[i].setForeground(TagSet.hex2Rgb(tag.getData(2)));
+						ScheduleLabel[i].setBackground(TagColorSet.hex2Rgb(tag.getData(2)));
 						}
 				}			
 				}
@@ -199,65 +213,17 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 	}
 	
 	public String getDate(){
-		return year+"/"+(month+1)+"/"+day;
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		if(!strDay.equals("")){
-			if(e.getButton()==3){//오른쪽 마우스 클릭
-				popup.show((Component)e.getSource(), e.getX(), e.getY());
-			}
-			else
-			{
-				showDayEvents=new ShowDayEvents(this, getDate(),dayScheduleVec);
-				showDayEvents.setVisible(true);
-			}
-		}
-		
-		
+		return year+"/"+strMonth+"/"+strDay;
 	}
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}//하루 판넬
-	
 	/*popupmenu 클릭시*/
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		   if(e.getSource() == addSchedule)
 		   {		   
-			   DAddSchedule addSchedule=new DAddSchedule(calendarMain,this.getDate());
+			   DAddSchedule addSchedule=new DAddSchedule(this.getDate());
 			   addSchedule.setVisible(true);
 	        }
-		   
-	        else if(e.getSource() == freezeDate)
-	        {
-	        
-	        } 
-
-
 	}
 	public JLabel[] getScheduleLabel() {
 		return ScheduleLabel;
@@ -269,71 +235,3 @@ public class DMonth_dayPane extends JPanel implements MouseListener,ActionListen
 }
 
 
-/*dayPane의 내용상세내용 창*/
-class ShowDayEvents extends JDialog{
-	private JPanel contentPane;
-	private JLabel DateLabel;
-	private String date;
-	private  JTable table;
-	private JPopupMenu popup1 = new JPopupMenu();
-	private JMenuItem modifySchedule;
-	private JMenuItem deleteSchedule;
-	// 1번 판넬 클릭하면 2번판넬(상세정보있는 페이지로)로 전환
-	public ShowDayEvents(DMonth_dayPane dMonth_dayPane,String date, Vector<EventData> dayScheduleVec){
-		
-		this.date=date;
-		setTitle("스케줄 상세보기");
-	    setResizable(false);
-	    setLocationRelativeTo(null);
-		setBounds(100, 100, 450, 768);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		JLabel DateLabel = new JLabel(date);
-		DateLabel.setBounds(50, 28, 57, 15);
-		contentPane.add(DateLabel);
-		
-		//schedule 시간과 내용들 정보
-		JPanel panel = new JPanel(); 
-		
-		panel.setBounds(0, 53, 450, 479);
-		contentPane.add(panel);
-		
-		  String colNames[] = { "시간", "스케줄명"};  // Jtable 헤더는 1차원 배열
-		  DefaultTableModel model=new DefaultTableModel(colNames,0){ // 셀 수정 못하게 하는 부분
-				public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-		  model.setNumRows(0);
-		  
-		  for(int i=0;i<dayScheduleVec.size();i++){ 
-			   Vector<String> VecInfo=new Vector<String>();//Vec에서 시간과 스케줄명 가져와 row 벡터에 저장 시키고 model.addRow
-			   VecInfo.add(dayScheduleVec.get(i).getData(4)+"-"+dayScheduleVec.get(i).getData(5));//시작시간 데이터
-			   VecInfo.add(dayScheduleVec.get(i).getData(2));//스켖
-			   model.addRow(VecInfo);
-			
-		  }
-		
-		 
-		   table = new JTable(model);   // 테이블 생성    
-	      
-	        JScrollPane scrollPane = new JScrollPane(table);  // 스크롤 기능 별도로 넣어줘야만 작동함
-	        table.setShowVerticalLines(false);
-	        panel.add(scrollPane, BorderLayout.CENTER); // contentPane에 테이블 적용
-	 
-	        
-	        modifySchedule = new JMenuItem("일정 수정");
-	        modifySchedule.addActionListener((ActionListener) this);
-	        popup1.add(modifySchedule);
-			
-	        deleteSchedule = new JMenuItem("일정 삭제");
-	        deleteSchedule.addActionListener((ActionListener) this);
-			popup1.add(deleteSchedule);
-	}
-
-
-}
-	

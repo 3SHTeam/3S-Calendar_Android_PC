@@ -1,4 +1,4 @@
-package DB;
+package Calendar.DB;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -7,10 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Data.EventData;
-import Data.GroupData;
-import Data.TagData;
-import Data.UserData;
+import Calendar.Data.EventData;
+import Calendar.Data.GroupData;
+import Calendar.Data.MessageData;
+import Calendar.Data.TagData;
+import Calendar.Data.UserData;
 
 public class JsonMaster {
 	private ArrayList<EventData> events = new ArrayList<EventData>();
@@ -38,6 +39,9 @@ public class JsonMaster {
 	public ArrayList<String> getUserIds_Arr() {return userIds_Arr;}
 	public void setUserIds_Arr(ArrayList<String> userIds_Arr) {this.userIds_Arr = userIds_Arr;}
 	
+	public ArrayList<MessageData> messages = new ArrayList<MessageData>();
+	public ArrayList<MessageData> getMessages() {return messages;}
+	public void setMessages(ArrayList<MessageData> messages) {this.messages = messages;}
 	
 	public void onPostExecute(String php, String str){
 		switch(php){
@@ -64,9 +68,54 @@ public class JsonMaster {
 		case "SelectMakeGroup":
 			selectMakeGroup(str);
 			break;
+			
+		case "SelectMyMessage":
+			SelectMyMessage(str);
+			break;
 		}
      }
 	
+	private void SelectMyMessage(String str) {
+	      String Mid;
+	        String sender;
+	        String receiver; 
+	        String type;
+	        String message;
+	        String Gid;
+	        String Gname;
+	        
+	        MessageData mdata;
+	        try{
+	            JSONObject root = new JSONObject(str);
+	            if(root.get("rownum").equals("0")) {
+	               this.messages = null;
+	               System.out.println("메세지가 없음!");
+	               return;
+	            }
+	            
+	            JSONArray ja = root.getJSONArray("result");
+
+	            for(int i=0; i<ja.length(); i++){
+	                JSONObject jo = ja.getJSONObject(i);
+	                Mid = jo.getString("Mid");
+	                sender= jo.getString("sender");
+	                receiver = jo.getString("receiver");
+	                type = jo.getString("type");
+	                message = jo.getString("message");
+	                Gid = jo.getString("Gid");
+	                Gname = jo.getString("Gname");
+	                
+	                System.out.println(Mid + " , " + sender + " , " + receiver
+	                      + " , " + type + " , " + message + " , " + Gid + " , " + Gname);
+	                
+	                mdata= new MessageData(Mid, sender, receiver, type, message, Gid, Gname);      
+	                this.messages.add(mdata);   
+	            }
+	        }catch(JSONException e){
+	            e.printStackTrace();
+	        }
+	   }
+	   
 	
 	private void selectMakeGroup(String str) {
 		String Gid;

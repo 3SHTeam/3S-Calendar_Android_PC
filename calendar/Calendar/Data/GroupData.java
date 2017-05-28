@@ -1,12 +1,12 @@
-package Data;
+package Calendar.Data;
 
 import java.util.ArrayList;
 
-import DB.JsonMaster;
-import DB.SendToDB;
+import Calendar.DB.JsonMaster;
+import Calendar.DB.SendToDB;
 
 public class GroupData implements DataInfo {
-	private String[] uData = new String[4];
+	private String[] uData = new String[6];
 	private ArrayList<String> userIds_Arr;// 회원 아이디
 	
 	public GroupData() {
@@ -61,7 +61,7 @@ public class GroupData implements DataInfo {
 
 	public void setUserIds_Arr() {
 		/* DB에서 스케줄 가져오기 */
-		String url = "http://113.198.84.66/Calendar3S/SelectGroupMember.php";
+		String url = "http://113.198.84.67/Calendar3S/SelectGroupMember.php";
 
 		SendToDB stDB = new SendToDB(url, getData(0));
 		stDB.start();// DB연결 스레드 시작

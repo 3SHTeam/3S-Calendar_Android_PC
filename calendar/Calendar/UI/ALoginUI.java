@@ -1,13 +1,11 @@
-package ui;
-
-import java.awt.EventQueue;
+package Calendar.UI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import DB.JsonMaster;
-import DB.SendToDB;
-import Data.UserData;
+import Calendar.DB.JsonMaster;
+import Calendar.DB.SendToDB;
+import Calendar.Data.UserData;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,7 +16,7 @@ public class ALoginUI extends JFrame {
 	private JTextField Googleid;
 	private JButton OKBtn;
 	private JPasswordField Googlepw;
-
+	
 	private static SendToDB stDB;
 	private static JsonMaster jm;
 	private static UserData user;
@@ -49,68 +47,57 @@ public class ALoginUI extends JFrame {
 		setResizable(false);
 		setBounds(100, 100, 700, 600);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		getContentPane().setLayout(null);
 		contentPane.setLayout(null);
-
-		JLabel lblGoogle = new JLabel("Google");
-		lblGoogle.setFont(new Font("Agency FB", Font.BOLD, 51));
-		lblGoogle.setBounds(290, 138, 122, 67);
-		contentPane.add(lblGoogle);
-
-		Googleid = new JTextField();
-		Googleid.setBounds(285, 279, 145, 21);
+		
+		JLabel lblLogo = new JLabel(Images.calendar_mainIcon);
+		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogo.setBounds(74, 15, 535, 367);
+		contentPane.add(lblLogo);
+		
+		JLabel lbLogin=new JLabel(Images.calendar_LoginIcon);
+		lbLogin.setBounds(74, 315, 535, 230);
+		contentPane.add(lbLogin);
+		
+		Googleid = new JTextField("boyoon456123@gmail.com");
+		Googleid.setFont(new Font("맑은 고딕", Font.PLAIN, 17));
+		Googleid.setBounds(235, 371, 259, 46);
 		contentPane.add(Googleid);
 		Googleid.setColumns(10);
 
-		JLabel IDLabel = new JLabel("ID");
-		IDLabel.setFont(new Font("굴림", Font.BOLD, 13));
-		IDLabel.setBounds(198, 280, 41, 18);
-		contentPane.add(IDLabel);
-
-		JLabel PasswordLabel = new JLabel("Password");
-		PasswordLabel.setFont(new Font("굴림", Font.BOLD, 13));
-		PasswordLabel.setBounds(177, 321, 85, 15);
-		contentPane.add(PasswordLabel);
-
-		Googlepw = new JPasswordField();
-		Googlepw.setBounds(285, 318, 145, 21);
+		Googlepw = new JPasswordField("111111");
+		Googlepw.setBounds(235, 441, 260, 46);
 		contentPane.add(Googlepw);
-
+		
 		JLabel label = new JLabel("구글 아이디가 없으신가요?");
 		label.setForeground(Color.BLUE);
-		label.setBounds(285, 396, 159, 15);
+		label.setBounds(250, 457, 269, 21);
 		contentPane.add(label);
-
-		OKBtn = new JButton("OK");
-		OKBtn.setBounds(453, 318, 63, 21);
-		OKBtn.addActionListener(new ActionListener() {
-			private Object user;
-
+		
+		OKBtn = new JButton(Images.LoginIcon);
+		OKBtn.setBounds(430, 60, 63, 110);		
+		OKBtn.setFont(new Font("Axure Handwriting", Font.BOLD, 16));
+		OKBtn.requestFocus();
+		OKBtn.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == OKBtn) {
 					// BFirstLoginUI login=new BFirstLoginUI();
 					if (setLoginData()) {// Login data확인 및 저장
 						dispose();
 						calendar = (DMonth_CalendarMain) DMonth_CalendarMain.getInstanace();
-//						calendar.setGroup(fgUI); // DMonth_CalendarView에
-//													// EFriend_GroupUI 보내기(그룹 정보
-//													// 공유)
-//						fgUI.setDMonth_CalendarView(calendar); // EFriend_GroupUI에
-//																// DMonth_CalendarView
-//																// 보내기(스캐줄 공유)
 						calendar.setVisible(true);
-						// login.setVisible(true);
 					}
 					else{
-						//로그인창 유지시키기
+						Googlepw.setText("");
 					}
 
 				}
 			}
 		});
-		contentPane.add(OKBtn);
+		lbLogin.add(OKBtn);
 
 	}
 
@@ -120,7 +107,7 @@ public class ALoginUI extends JFrame {
 
 		System.out.println("id: " + id + " password: " + pw);
 
-		String url = "http://113.198.84.66/Calendar3S/SelectMyProfile.php";
+		String url = "http://113.198.84.67/Calendar3S/SelectMyProfile.php";
 		String message = "where Googleid = '" + id + "' and Googlepw = '" + pw + "'";
 
 		stDB = new SendToDB(url, message);

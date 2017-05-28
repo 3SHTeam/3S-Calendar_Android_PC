@@ -1,4 +1,4 @@
-package ui;
+package Calendar.UI;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,9 +8,9 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import DB.JsonMaster;
-import DB.SendToDB;
-import Data.FriendData;
+import Calendar.DB.JsonMaster;
+import Calendar.DB.SendToDB;
+import Calendar.Data.FriendData;
 
 public class EFriend  extends JFrame{
 	
@@ -67,25 +67,13 @@ public class EFriend  extends JFrame{
 		FriendTable.getColumnModel().getColumn(5).setPreferredWidth(100);
 		FriendTable.getColumnModel().getColumn(6).setPreferredWidth(400);
 		scrollPane = new JScrollPane(FriendTable);
-		scrollPane.setBounds(0, 53, 1189, 628);
+		scrollPane.setBounds(0, 53, 1210, 628);
 		FriendPanel.add(scrollPane);
 
 		JButton inviteButton = new JButton("친구초대");// 친구초대버튼
 		inviteButton.setBounds(28, 20, 97, 23);
 		FriendPanel.add(inviteButton);
 
-		JButton addGroupButton = new JButton("그룹만들기");// 그룹만들기버튼
-		addGroupButton.setBounds(137, 20, 114, 23);
-		FriendPanel.add(addGroupButton);
-		addGroupButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == addGroupButton) {
-					MakeGroup=new EAdd_Group(eGroup);
-					MakeGroup.setVisible(true);
-
-				}
-			}
-		});
 	}	
 	
 	public JPanel getFriendPanel() {return FriendPanel;}

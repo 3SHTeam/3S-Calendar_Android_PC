@@ -1,4 +1,4 @@
-package Data;
+package Calendar.Data;
 
 import javax.swing.JCheckBox;
 
@@ -7,7 +7,7 @@ public class TagData implements DataInfo {
 
 	private JCheckBox box;// 태그들을 체크박스로
 
-
+	public TagData(){};
 	public TagData(String Tagid, String Tag_name, String Color, String Font, String Size, String Gid) {
 
 		setData(0, Tagid);

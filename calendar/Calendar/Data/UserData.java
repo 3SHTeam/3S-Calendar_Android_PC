@@ -1,4 +1,4 @@
-package Data;
+package Calendar.Data;
 
 public class UserData implements DataInfo {
 	private String[] uData = new String[9];

@@ -1,19 +1,18 @@
-package ui;
+package Calendar.UI;
 
 import java.awt.*;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import Data.UserData;
+import Calendar.Data.UserData;
 
-public class FMypage extends JFrame {
+public class FMypage extends JDialog {
 
 	private JPanel contentPane;
-	private UserData user;
+	private Calendar.Data.UserData user;
 	private JLabel googleID;
 	private JLabel name;
 	private JTextField nickname;
@@ -21,7 +20,9 @@ public class FMypage extends JFrame {
 	private JLabel birth;
 	private JLabel phone;
 	private JTextField comment;
-
+	private Font font=new Font("¸¼Àº °íµñ",Font.BOLD,18);
+	private Font f=new Font("MD°³¼ºÃ¼",Font.BOLD,18);
+	private Dimension d=new Dimension(273,45);
 	
 	public FMypage(UserData user) {
 		setLocationRelativeTo(null);
@@ -44,16 +45,23 @@ public class FMypage extends JFrame {
 
 	private void init() {
 		setTitle("MyPage");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 741, 490);
-		contentPane = new JPanel();
+		Image img=Images.smainIcon.getImage();
+		contentPane = new JPanel(){
+			   public void paintComponent(Graphics g){
+				    g.drawImage(img, 0, 0, 741, 490, null);
+				   }
+				  };
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+
+
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(46, 58, 200, 323);
+		panel.setOpaque(false);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -62,8 +70,8 @@ public class FMypage extends JFrame {
 		picture.setBounds(17, 40, 166, 172);
 		panel.add(picture);
 		
-		JButton okButton = new JButton("È®ÀÎ");
-		okButton.setBounds(38, 243, 125, 29);
+		JButton okButton = new JButton(Images.OKIcon);
+		okButton.setBounds(38, 245, 110,50);
 		okButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -73,58 +81,74 @@ public class FMypage extends JFrame {
 		panel.add(okButton);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(289, 58, 373, 323);
+		panel_1.setBounds(289, 58, 373, 315);
+		panel_1.setOpaque(false);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new GridLayout(0, 2, 0, 0));
 		
+		
 		JLabel googleIdLabel=new JLabel("¾ÆÀÌµð :");
-		googleIdLabel.setFont(new Font("±¼¸²", Font.PLAIN, 17));
+		googleIdLabel.setFont(font);
 		panel_1.add(googleIdLabel);
 		
 		googleID = new JLabel();
+		googleID.setFont(f);
+		googleID.setSize(d);
 		panel_1.add(googleID);
 		
 		JLabel nameLabel = new JLabel("ÀÌ¸§ :");
-		nameLabel.setFont(new Font("±¼¸²", Font.PLAIN, 17));
+		nameLabel.setFont(font);
 		panel_1.add(nameLabel);
 		
 		name = new JLabel();
+		name.setFont(f);
+		name.setSize(d);
 		panel_1.add(name);
 	
 		JLabel nickLabel = new JLabel("´Ð³×ÀÓ :");
-		nickLabel.setFont(new Font("±¼¸²", Font.PLAIN, 17));
+		nickLabel.setFont(font);
 		panel_1.add(nickLabel);
 		
 		nickname = new JTextField();
+		nickname.setFont(f);
+		nickname.setSize(d);
 		panel_1.add(nickname);
 		
 		JLabel genderLabel = new JLabel("¼ºº° :");
-		genderLabel.setFont(new Font("±¼¸²", Font.PLAIN, 17));
+		genderLabel.setFont(font);
 		panel_1.add(genderLabel);
 		
 		gender = new JLabel();
-		gender.setFont(new Font("±¼¸²", Font.PLAIN, 17));
+		gender.setFont(f);
+		gender.setSize(d);
 		panel_1.add(gender);
 		
 		JLabel birthLabel = new JLabel("»ýÀÏ :");
-		birthLabel.setFont(new Font("±¼¸²", Font.PLAIN, 17));
+		birthLabel.setFont(font);
 		panel_1.add(birthLabel);
 		
 		birth = new JLabel();
+		birth.setFont(f);
+		birth.setSize(d);
 		panel_1.add(birth);
 		
 		JLabel phoneLabel = new JLabel("ÀüÈ­¹øÈ£ :");
-		phoneLabel.setFont(new Font("±¼¸²", Font.PLAIN, 17));
+		phoneLabel.setFont(font);
 		panel_1.add(phoneLabel);
 		
 		phone = new JLabel();
+		phone.setFont(f);
+		phone.setSize(d);
 		panel_1.add(phone);
 		
 		JLabel commentLabel = new JLabel("ÇÑ¸¶µð :");
-		commentLabel.setFont(new Font("±¼¸²", Font.PLAIN, 17));
+		commentLabel.setFont(font);
+		commentLabel.setSize(d);
 		panel_1.add(commentLabel);
 		
 		comment = new JTextField();
+		comment.setFont(f);
+		comment.setSize(d);
 		panel_1.add(comment);
 	}
 

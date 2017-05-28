@@ -1,4 +1,4 @@
-package ui;
+package Calendar.UI;
 //
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -6,16 +6,15 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import org.apache.commons.codec.binary.Hex;
+//import org.apache.commons.codec.binary.Hex;
 
-import Data.TagData;
+import Calendar.Data.TagData;
 
 
 
-public class TagSet {
+public class TagColorSet {
 
-	private ArrayList<TagData> tags = new ArrayList<TagData>();
-	public TagSet(){
+	public TagColorSet(){
 
 	}
 	
@@ -33,35 +32,11 @@ public class TagSet {
 	
 	//Color->Hex
 	public static String colorToHex(Color c){
-		String rgbToHex="0x"+Integer.toHexString(c.getRed())
+		String rgbToHex="#"+Integer.toHexString(c.getRed())
 						+Integer.toHexString(c.getGreen())
 						+Integer.toHexString(c.getBlue());
 		
 		return rgbToHex;
-	}
-
-	public String[] checkTagids() {
-		String[] tagIds = new String[tags.size()];
-		for(int i=0;i<tags.size();i++)
-			if(tags.get(i).checkStatus())
-				tagIds[i] = tags.get(i).getData(0);
-		
-		return tagIds;
-	}
-	
-	
-	/*addSchedule할 때 태크체크박스에집어넣어줌*/
-	public String[] checkTagName() {
-		String[] tagNames = new String[tags.size()];
-		for(int i=0;i<tags.size();i++)
-			if(tags.get(i).checkStatus())
-				tagNames[i] = tags.get(i).getData(1);
-		
-		return tagNames;
-	}
-	public void setTags(ArrayList<TagData> tags) {
-		this.tags=tags;
-		
 	}
 	
 	//String(Hex)->Color

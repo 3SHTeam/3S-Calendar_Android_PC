@@ -1,4 +1,4 @@
-package Data;
+package Calendar.Data;
 
 public interface DataInfo {
 	public String[] getData();

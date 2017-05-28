@@ -1,4 +1,4 @@
-package DB;
+package Calendar.DB;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,8 +23,11 @@ public class SendToFirebase extends Thread{
 
        public SendToFirebase(String url, String message, String token){
            URL = url;
-           this.message = "message="+message;
+           this.message = message;
            this.token = "token="+token;
+           System.out.println(message);
+           System.out.println(token);
+           System.out.println(url);
        }
 
        @Override
@@ -37,36 +40,32 @@ public class SendToFirebase extends Thread{
            StringBuilder output = new StringBuilder();
            try{
                URL url = new URL(urlStr);
-               HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+               URLConnection conn; conn = (URLConnection)url.openConnection();
+               //String data = "[message]="+URLEncoder.encode(message,"UTF-8") +
+               //					"&[Token]="+URLEncoder.encode(token,"UTF-8");
+               String data = String.format("message=%s&Token=%s",
+            		   URLEncoder.encode(message,"UTF-8"),
+            		   URLEncoder.encode(token,"UTF-8"));
+               
                if(conn != null) {
                    conn.setConnectTimeout(5000);
                    conn.setDoInput(true);
                    conn.setDoOutput(true);
-
-                   BufferedWriter writer = new BufferedWriter(
-                         new OutputStreamWriter(conn.getOutputStream()));
-                   writer.write(message, 0, message.length());
-                   //writer.newLine();
-                   writer.write(token, 0, token.length());
-                   writer.flush();
-                   writer.close();
                    
-                   int resCode = conn.getResponseCode();
-                   if (resCode == HttpURLConnection.HTTP_OK) {
-                       BufferedReader reader = new BufferedReader(
+                   OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+                   writer.write(data);
+                   writer.flush();
+                   
+                   BufferedReader rd = new BufferedReader(
                              new InputStreamReader(conn.getInputStream(), "UTF-8"));
                        String line = null;
-                       while (true) {
-                           line = reader.readLine();
-                           if (line == null) {
-                               break;
-                           }
-                           output.append(line + "\n");
+                       while ((line = rd.readLine()) != null) {
+                    	   output.append(line + "\n");
                        }
-                       reader.close();
-                       conn.disconnect();
+                       
+                       rd.close();
+                       writer.close();
                    }
-               }
            }catch (Exception ex){
                ex.printStackTrace();
            }

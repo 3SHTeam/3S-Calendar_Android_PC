@@ -1,9 +1,11 @@
-package Data;
+package Calendar.Data;
 
 public class EventData implements DataInfo{
 	private String[] uData = new String[9];
 
-	private int year,month,day;
+	String year;
+
+	private String month,day;
 
 	public EventData(){
 		
@@ -27,22 +29,22 @@ public class EventData implements DataInfo{
 
 	private void splitDate() {
 		//yyyyMMddhhmm
-		year = Integer.valueOf(uData[4].substring(0, 4));
-		month = Integer.valueOf(uData[4].substring(4, 6));
-		day = Integer.valueOf(uData[4].substring(6, 8));
+		year = uData[4].substring(0, 4);
+		month = uData[4].substring(4, 6);
+		day = uData[4].substring(6, 8);
 	}
 
-	public Integer getYear() {
+	public String getYear() {
 		return year;
 	}
 
 
-	public Integer getMonth() {
+	public String getMonth() {
 		return month;
 	}
 
 
-	public Integer getDay() {
+	public String getDay() {
 		return day;
 	}
 
@@ -85,7 +87,7 @@ public class EventData implements DataInfo{
 		System.out.println("TagId : " + uData[6]);
 		System.out.println("GoogleSId : " + uData[7]);
 		System.out.println("GId : " + uData[8]);
-		System.out.println("Date : " + year + "/" + +month + "/" + day);
+		System.out.println("Date : " + year + "/" +month + "/" + day);
 	}
 
 }
