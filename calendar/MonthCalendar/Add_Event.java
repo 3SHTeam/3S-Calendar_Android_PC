@@ -1,24 +1,19 @@
-package Calendar.UI;
+package MonthCalendar;
 
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
@@ -28,8 +23,11 @@ import org.json.JSONObject;
 import Calendar.DB.SendToFirebase;
 import Calendar.Data.EventData;
 import Calendar.Data.TagData;
+import Calendar.UI.CalendarTimeFormat;
+import Calendar.UI.Images;
+import Calendar.UI.initEventPanel;
 
-public class DAddSchedule extends initEventPanel {
+public class Add_Event extends initEventPanel {
    private JPanel contentPane;
    private JLabel DayLabel;
    
@@ -46,7 +44,7 @@ public class DAddSchedule extends initEventPanel {
 
     private JComboBox <String>tagBox;
 
-    private DMonth_CalendarMain calendar;
+    private CalendarMain calendar;
     private EventData event=new EventData();
     private String tagId;
 
@@ -54,7 +52,7 @@ public class DAddSchedule extends initEventPanel {
 
 
    
-   public DAddSchedule(String date){
+   public Add_Event(String date){
 	   super();
        setTitle("일정 추가");
        setResizable(false);
@@ -73,7 +71,7 @@ public class DAddSchedule extends initEventPanel {
         setContentPane(contentPane);
         contentPane.setLayout(null);   
 
-	    calendar=DMonth_CalendarMain.getInstanace();
+	    calendar=CalendarMain.getInstanace();
 	    tags=calendar.getTags();
 	    
 	    this.date=date;//"xxxx/xx/xx"	    
@@ -98,10 +96,10 @@ public class DAddSchedule extends initEventPanel {
 		tagBox.setFont(f);
 		tagBox.setBounds(120, 260, 270, 42);
 
-		String[] tagNames = new String[tags.size()];
-		tagNames = calendar.getTagNames();
-		for (int i = 0; i < tagNames.length; i++) {
-			tagBox.addItem(tagNames[i]);
+		ArrayList<String> tagNames;
+		tagNames = calendar.getTagNames("NULL");
+		for (int i = 0; i < tagNames.size(); i++) {
+			tagBox.addItem(tagNames.get(i));
 		}
 		contentPane.add(tagBox);
 	  }

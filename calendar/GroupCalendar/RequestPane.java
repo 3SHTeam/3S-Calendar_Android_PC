@@ -1,4 +1,4 @@
-package Calendar.UI;
+package GroupCalendar;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -13,11 +13,9 @@ import Calendar.DB.JsonMaster;
 import Calendar.DB.SendToDB;
 import Calendar.Data.GroupData;
 import Calendar.Data.MessageData;
-import Calendar.Table.RequestEventTable;
-import Calendar.Table.RequestGroupTable;
+import MonthCalendar.CalendarMain;
 
-public class ERequest extends JFrame{
-	private EFriend_GroupMain fgMain;
+public class RequestPane extends JFrame{
 	
 	private JPanel RequestPanel;
 	
@@ -37,11 +35,11 @@ public class ERequest extends JFrame{
 	private Vector<GroupData> allGroup_Vec=new Vector<GroupData>();
 	private Font f=new Font("¸¼Àº °íµñ",Font.BOLD,20);
 	
-	public ERequest(Vector<GroupData> allGroup_Vec) {
+	public RequestPane(Vector<GroupData> allGroup_Vec) {
 		this.allGroup_Vec=allGroup_Vec;
 		
 		String sql = "receiver='" + 
-				DMonth_CalendarMain.getInstanace().getUser().getData(0) + "'";
+				CalendarMain.getInstanace().getUser().getData(0) + "'";
 		
 		selectMyInviteToDB(sql);
 		
@@ -53,7 +51,7 @@ public class ERequest extends JFrame{
 				if(message.getData(3).equals("groupInvite")){
 					request_GroupList.add(message);
 				}
-				else{
+				else if(message.getData(3).equals("groupSchedule")){
 					request_ScheduleList.add(message);
 				}
 			}
@@ -62,10 +60,10 @@ public class ERequest extends JFrame{
 		RequestPanel = new JPanel();
 		RequestPanel.setLayout(null);
 		
-		RequestGroupTable requestGTable=new RequestGroupTable(request_GroupList);
+		Request_GroupTable requestGTable=new Request_GroupTable(request_GroupList);
 		RequestPanel.add(requestGTable.getRequestPane());
 		
-		RequestEventTable requestETable=new RequestEventTable(request_ScheduleList);
+		Request_EventTable requestETable=new Request_EventTable(request_ScheduleList);
 		RequestPanel.add(requestETable.getRequestPane());
 
 	}

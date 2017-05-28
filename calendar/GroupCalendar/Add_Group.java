@@ -1,4 +1,4 @@
-package Calendar.UI;
+package GroupCalendar;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -13,7 +13,9 @@ import javax.swing.border.EmptyBorder;
 
 import Calendar.DB.SendToDB;
 import Calendar.Data.GroupData;
-public class EAdd_Group extends JDialog {
+import Calendar.UI.Images;
+import MonthCalendar.CalendarMain;
+public class Add_Group extends JDialog {
 
 	private JPanel contentPane;
 	private GroupData groupData;
@@ -22,15 +24,15 @@ public class EAdd_Group extends JDialog {
 
 	private JTextField GroupNameField;
 	private JTextField GroupIntroField;
-	private EGroup eGroup;
+	private GroupPane eGroup;
 
-	public EAdd_Group(EGroup eGroup) {
+	public Add_Group(GroupPane eGroup) {
 		this.eGroup = eGroup;
 		init();
 	}
 
 	private void init() {
-		setTitle("Make Group");
+		setTitle("그룹 만들기");
 		setResizable(false);
 		setBounds(100, 100, 450, 500);
 		Image img=Images.smainIcon.getImage();
@@ -106,7 +108,7 @@ public class EAdd_Group extends JDialog {
 		
 		group.setData(1, GroupNameField.getText());
 		group.setData(2, GroupIntroField.getText());
-		group.setData(3, DMonth_CalendarMain.getInstanace().getUser().getData(0));
+		group.setData(3, CalendarMain.getInstanace().getUser().getData(0));
 		
 		//새로운 그룹을 DB에 추가
 		addGroupToDB(group.getSendSQLString());

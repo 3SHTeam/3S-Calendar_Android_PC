@@ -1,11 +1,7 @@
-package Calendar.UI;
+package MonthCalendar;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 import java.util.*;
 
@@ -16,9 +12,11 @@ import javax.swing.table.DefaultTableModel;
 
 import Calendar.Data.EventData;
 import Calendar.Data.TagData;
+import Calendar.UI.TagColorSet;
+import GroupCalendar.GroupMain;
 
 
-public class DMonth_dayPane extends JPanel implements ActionListener{
+public class CalendarDayPane extends JPanel implements ActionListener{
 	
 	private JPanel dayInfoPanel;//하루 전체 정보판넬 
 	private JPanel dayNumPanel;
@@ -40,8 +38,8 @@ public class DMonth_dayPane extends JPanel implements ActionListener{
 	
 	int position;
 	
-	private DMonth_CalendarMain calendar;
-	DShowDayEvents showDayEvents;//상세보기 새창
+	private CalendarMain calendar;
+	Show_DayEvents showDayEvents;//상세보기 새창
 	
 	private EventData event;
 	
@@ -53,7 +51,7 @@ public class DMonth_dayPane extends JPanel implements ActionListener{
 	public Vector<EventData> getVec() {return dayScheduleVec;}
 	public void setVec(Vector<EventData> vec) {dayScheduleVec = vec;}
 	
-	public DMonth_dayPane(DMonth_CalendarMain calendar,EFriend_GroupMain group) {
+	public CalendarDayPane(CalendarMain calendar,GroupMain group) {
 		//GetGoogle gg = new GetGoogle();
 		dayLabel=new JLabel();
 		dayLabel.setFont(new Font("맑은 고딕",Font.BOLD,16));
@@ -90,7 +88,7 @@ public class DMonth_dayPane extends JPanel implements ActionListener{
 					}
 					else
 					{
-						showDayEvents=new DShowDayEvents(getDate(),dayScheduleVec);
+						showDayEvents=new Show_DayEvents(getDate(),dayScheduleVec);
 						showDayEvents.setVisible(true);
 					}
 				}		
@@ -221,7 +219,7 @@ public class DMonth_dayPane extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		   if(e.getSource() == addSchedule)
 		   {		   
-			   DAddSchedule addSchedule=new DAddSchedule(this.getDate());
+			   Add_Event addSchedule=new Add_Event(this.getDate());
 			   addSchedule.setVisible(true);
 	        }
 	}

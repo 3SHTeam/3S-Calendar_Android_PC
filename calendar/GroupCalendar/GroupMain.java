@@ -1,4 +1,4 @@
-package Calendar.UI;
+package GroupCalendar;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,29 +9,32 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import Calendar.Data.GroupData;
+import Calendar.UI.FMypage;
+import Calendar.UI.Images;
+import MonthCalendar.CalendarMain;
 
 
-public class EFriend_GroupMain extends JFrame implements ActionListener{
+public class GroupMain extends JFrame implements ActionListener{
 	private JTabbedPane tab;
 	private JPanel contentPane;
 	private JSplitPane GroupPanel; // 그룹 정보(왼쪽 그룹이름, 오른쪽 해당 그룹의 스캐줄)
 	private JPanel RequestPanel;
 
-	private EGroup eGroup;
-	private ERequest eRequest;
+	private GroupPane eGroup;
+	private RequestPane eRequest;
 
-	private DMonth_CalendarMain calendar; // 스캐줄 정보를 가져오기 위해
+	private CalendarMain calendar; // 스캐줄 정보를 가져오기 위해
 
 	private JButton mypageBtn;
 	private JButton calendarBtn;
 	private JButton AddGroupBtn;
 	private JButton logoutBtn;
-	private EAdd_Group MakeGroup;
+	private Add_Group MakeGroup;
 	private Vector<GroupData> allGroup_Vec=new Vector<GroupData>();
 
-	public EFriend_GroupMain(DMonth_CalendarMain calendar) {
+	public GroupMain(CalendarMain calendar) {
 		this.calendar = calendar;		
-		setTitle("Friend_Group");
+		setTitle("Group");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1230, 850);
 		getContentPane().setLayout(null);
@@ -75,13 +78,13 @@ public class EFriend_GroupMain extends JFrame implements ActionListener{
 		tab.setBounds(10, 0, 1200, 710);
 		tab.setOpaque(false);
 		//tab의 group부분
-		eGroup=new EGroup();
+		eGroup=new GroupPane();
 		GroupPanel=eGroup.getGroupSpiltPanel();
 		
 		allGroup_Vec=eGroup.getAllGroupVec();
 		
 		//tab의 request부분
-		eRequest=new ERequest(allGroup_Vec);
+		eRequest=new RequestPane(allGroup_Vec);
 		RequestPanel=eRequest.getRequestPanel();
 		
 		tab.addTab("그룹", GroupPanel);	
@@ -112,14 +115,14 @@ public class EFriend_GroupMain extends JFrame implements ActionListener{
 	}	
 	
 
-	public void setDMonth_CalendarView(DMonth_CalendarMain calendar) {
+	public void setDMonth_CalendarView(CalendarMain calendar) {
 		this.calendar = calendar;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mypageBtn) {
-			FMypage mypage=new FMypage(DMonth_CalendarMain.getInstanace().getUser());
+			FMypage mypage=new FMypage(CalendarMain.getInstanace().getUser());
 			mypage.setVisible(true);
 			dispose();
 		}
@@ -134,7 +137,7 @@ public class EFriend_GroupMain extends JFrame implements ActionListener{
 		}
 		
 		if (e.getSource() == AddGroupBtn) {
-			MakeGroup=new EAdd_Group(eGroup);
+			MakeGroup=new Add_Group(eGroup);
 			MakeGroup.setVisible(true);
 		}
 		if (e.getSource() == logoutBtn) {

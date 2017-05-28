@@ -1,4 +1,4 @@
-package Calendar.UI;
+package MonthCalendar;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -8,12 +8,15 @@ import javax.swing.border.*;
 
 import Calendar.DB.JsonMaster;
 import Calendar.DB.SendToDB;
-import Calendar.Data.EventData;
-import Calendar.Data.TagData;
-import Calendar.Data.UserData;
+import Calendar.Data.*;
+import Calendar.UI.ALoginUI;
+import Calendar.UI.FMypage;
+import Calendar.UI.Images;
+import Calendar.UI.TagColorSet;
+import GroupCalendar.GroupMain;
 
 
-public class DMonth_CalendarMain extends JFrame implements ActionListener {
+public class CalendarMain extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JPanel YearPanel;// 년
 	private JLabel YearLabel;
@@ -25,7 +28,7 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 	final String[] DAY_OF_MONTH={ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" };
 	final String[] DAYS_OF_WEEK = { "일", "월", "화", "수", "목", "금", "토" };
 	
-	DMonth_dayPane days[];// 42개의 day설정
+	CalendarDayPane days[];// 42개의 day설정
 	private int year, month, today, lastday, startYoil;// 년,월,일,달의 마지막일 ,시작요일
 
 	private JButton groupBtn;
@@ -36,9 +39,9 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 	private JButton refreshBtn;
 	private JCheckBox tagbox;
 
-	private static EFriend_GroupMain group;
+	private static GroupMain group;
 
-	public static final DMonth_CalendarMain instance = new DMonth_CalendarMain(group);
+	public static final CalendarMain instance = new CalendarMain(group);
 
 	private Calendar now = Calendar.getInstance();
 
@@ -49,10 +52,10 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 	private UserData user;// 사용자 정보
 	private ArrayList<EventData> allEvents = new ArrayList<EventData>();// 모든 스케줄데이터
 	private ArrayList<TagData> tags = new ArrayList<TagData>();// 각각 스케줄마다의 태그	
-	private final DefaultListModel<CheckListItem> model= new DefaultListModel<CheckListItem>();
-	private JList<CheckListItem>tagList;
+	private final DefaultListModel<TagList_CheckItem> model= new DefaultListModel<TagList_CheckItem>();
+	private JList<TagList_CheckItem>tagList;
 	
-	public DMonth_CalendarMain(EFriend_GroupMain group) {
+	public CalendarMain(GroupMain group) {
 		
 		setTitle("CalendarView");
 		setResizable(false);
@@ -191,9 +194,9 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 		DaysPanel.setBackground(Color.LIGHT_GRAY);
 		DaysPanel.setBounds(190, 130, 1200, 660);
 		DaysPanel.setLayout(new GridLayout(6, 7));
-		days = new DMonth_dayPane[42];
+		days = new CalendarDayPane[42];
 		for (int i = 0; i < days.length; i++) {
-			days[i] = new DMonth_dayPane(this,group);
+			days[i] = new CalendarDayPane(this,group);
 			DaysPanel.add(days[i]);
 		}
 		changeDate();
@@ -234,14 +237,14 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 	}
 
 	private void setTagList() {
-		tagList=new JList<CheckListItem>(model);
-		tagList.setCellRenderer(new CheckListRenderer());
+		tagList=new JList<TagList_CheckItem>(model);
+		tagList.setCellRenderer(new TagList_CheckRenderer());
 		
 		for (int i = 0; i < tags.size(); i++) {
 			String tagName = tags.get(i).getData(1);
 			String colorStr = tags.get(i).getData(2);
 
-			model.addElement(new CheckListItem(tagName,colorStr));
+			model.addElement(new TagList_CheckItem(tagName,colorStr));
 	}
 		JScrollPane pane=new JScrollPane(tagList);
 		pane.setBounds(5, 251, 182, 300);
@@ -253,7 +256,7 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
                {
             	   JList list = (JList) e.getSource();
                    int index = list.locationToIndex(e.getPoint());  
-                   CheckListItem item = (CheckListItem)list.getModel().getElementAt(index);
+                   TagList_CheckItem item = (TagList_CheckItem)list.getModel().getElementAt(index);
                    item.setSelected(! item.isSelected());
                    list.repaint(list.getCellBounds(index, index));
            
@@ -388,7 +391,7 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 		
 		if (e.getSource() == groupBtn) {
 			this.setVisible(false);
-			EFriend_GroupMain fgMain=new EFriend_GroupMain(this);
+			GroupMain fgMain=new GroupMain(this);
 			fgMain.setVisible(true);
 		}
 		if (e.getSource() == myPageBtn) {
@@ -415,15 +418,15 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 		}
 	}
 
-	public static DMonth_CalendarMain getInstanace() {
+	public static CalendarMain getInstanace() {
 		return instance;
 	}
 
-	public void setGroup(EFriend_GroupMain group) {
+	public void setGroup(GroupMain group) {
 		this.group = group;
 	}
 
-	public EFriend_GroupMain getGroup() {
+	public GroupMain getGroup() {
 		return group;
 	}
 
@@ -543,7 +546,7 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 			url = "http://113.198.84.67/Calendar3S/InsertTag.php";
 			Googleid = user.getData(0);
 
-			String message = "'" + Googleid + "','" + name + "','" + color + "','맑은고딕','15','NULL'";
+			String message = "'" + Googleid + "','" + name + "','" + color + "','맑은고딕','15',''";
 
 			stDB = new SendToDB(url, message);
 			stDB.start();// DB연결 스레드 시작
@@ -561,7 +564,7 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 			for(int i=0;i<tagList.getModel().getSize();i++){
 				String tagName=tags.get(i).getData(1);
 				JList list= (JList) tagList;
-				CheckListItem tagbox=tagList.getModel().getElementAt(i);
+				TagList_CheckItem tagbox=tagList.getModel().getElementAt(i);
 				String tagboxName=tagbox.toString();
 
 				if(tagbox.isSelected() && tagboxName.equals(tagName))
@@ -570,10 +573,23 @@ public class DMonth_CalendarMain extends JFrame implements ActionListener {
 			return tagIds;			
 		}
 		
-		public String[] getTagNames() {
-			String[] tagNames = new String[tagList.getModel().getSize()];
-			for(int i=0;i<tagList.getModel().getSize();i++)
-				tagNames[i]=tags.get(i).getData(1);
+		public ArrayList<String> getTagNames(String Gid) {
+			//freshTag();
+			ArrayList<String> tagNames = new ArrayList<String>();
+				
+			for(int i=0;i<tagList.getModel().getSize();i++){
+				if(Gid.equals("NULL")){//일반 스케줄 태그
+					if(tags.get(i).getData(5).equals("0"))
+						tagNames.add(tags.get(i).getData(1));
+				}
+				else{
+					if(tags.get(i).getData(5).equals(Gid)){
+						tagNames.add(tags.get(i).getData(1));
+						break;
+					}
+				}
+				
+			}
 			
 			return tagNames;
 		}

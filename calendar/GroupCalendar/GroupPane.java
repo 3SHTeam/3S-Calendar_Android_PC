@@ -1,4 +1,4 @@
-package Calendar.UI;
+package GroupCalendar;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,9 +14,11 @@ import javax.swing.table.DefaultTableModel;
 import Calendar.DB.JsonMaster;
 import Calendar.DB.SendToDB;
 import Calendar.Data.GroupData;
+import Calendar.UI.Images;
+import MonthCalendar.CalendarMain;
 
-public class EGroup extends JFrame implements ActionListener{
-	private EFriend_GroupMain fgMain;
+public class GroupPane extends JFrame implements ActionListener{
+	private GroupMain fgMain;
 	
 	private JSplitPane GroupPanel; 
 	
@@ -33,11 +35,10 @@ public class EGroup extends JFrame implements ActionListener{
 	
 	private JPopupMenu Crew = new JPopupMenu();// 오른쪽 마우스 클릭시
 
-	
 	private Vector<GroupData> GroupVec = new Vector<GroupData>();//그룹정보가 들어있는 전체그룹vec
 	public Vector<GroupData> getAllGroupVec() {return GroupVec;}
 
-	private Vector<String>nameVec;//그룹이름들
+	private Vector<String> GnameVec;//그룹이름들
 	private String selectedName;//테이블 열이름
 
 	private String user_id;
@@ -46,8 +47,8 @@ public class EGroup extends JFrame implements ActionListener{
 	private JsonMaster jm;
 
 	
-	public EGroup() {
-		user_id=DMonth_CalendarMain.getInstanace().getUser().getData(0);
+	public GroupPane() {
+		user_id=CalendarMain.getInstanace().getUser().getData(0);
 
 		freshGroup();
 		
@@ -161,9 +162,9 @@ public class EGroup extends JFrame implements ActionListener{
 	}
 	private void setLeftModel(){
 		for(int i=0;i<GroupVec.size();i++){
-			nameVec=new Vector<String>();
-			nameVec.addElement(GroupVec.get(i).getData(1));
-			leftModel.addRow(nameVec);
+			GnameVec=new Vector<String>();
+			GnameVec.addElement(GroupVec.get(i).getData(1));
+			leftModel.addRow(GnameVec);
 		}		
 		
 	}
@@ -220,7 +221,7 @@ public void actionPerformed(ActionEvent e) {
 			
 			else if(e.getSource() == addFriend){
 				if(user_id.equals(GMaster)){
-				   EAdd_Member addMember=new EAdd_Member(this,Gid,Gname);
+				   Add_Member addMember=new Add_Member(this,Gid,Gname);
 				   addMember.setVisible(true);
 				}		
 				else{
@@ -240,7 +241,7 @@ public void actionPerformed(ActionEvent e) {
 			
 			else if(e.getSource() == addGroupEvent){
 				if(user_id.equals(GMaster)){
-					EAdd_GroupEvent addGroupEvent=new EAdd_GroupEvent(group);
+					Add_GroupEvent addGroupEvent=new Add_GroupEvent(group);
 					addGroupEvent.setVisible(true);
 				}	
 				else{
@@ -356,7 +357,7 @@ public void actionPerformed(ActionEvent e) {
 	public void addGroupTag(String name, String Gid) {
 		/* DB에 그룹 태그 삽입하기 */
 		url = "http://113.198.84.67/Calendar3S/InsertTag.php";
-		Googleid = DMonth_CalendarMain.getInstanace().getUser().getData(0);
+		Googleid = CalendarMain.getInstanace().getUser().getData(0);
 
 		String message = "'" + Googleid + "','" + name + "','" + "#f6f9bd" + "','맑은고딕','15','"+Gid+"'";
 

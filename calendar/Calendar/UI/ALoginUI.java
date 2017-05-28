@@ -6,12 +6,13 @@ import javax.swing.border.EmptyBorder;
 import Calendar.DB.JsonMaster;
 import Calendar.DB.SendToDB;
 import Calendar.Data.UserData;
+import MonthCalendar.CalendarMain;
 
 import java.awt.*;
 import java.awt.event.*;
 
 public class ALoginUI extends JFrame {
-	private DMonth_CalendarMain calendar;
+	private CalendarMain calendar;
 	private JPanel contentPane;
 	private JTextField Googleid;
 	private JButton OKBtn;
@@ -87,7 +88,7 @@ public class ALoginUI extends JFrame {
 					// BFirstLoginUI login=new BFirstLoginUI();
 					if (setLoginData()) {// Login data확인 및 저장
 						dispose();
-						calendar = (DMonth_CalendarMain) DMonth_CalendarMain.getInstanace();
+						calendar = (CalendarMain) CalendarMain.getInstanace();
 						calendar.setVisible(true);
 					}
 					else{

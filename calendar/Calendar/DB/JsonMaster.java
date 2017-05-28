@@ -1,17 +1,8 @@
 package Calendar.DB;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import Calendar.Data.EventData;
-import Calendar.Data.GroupData;
-import Calendar.Data.MessageData;
-import Calendar.Data.TagData;
-import Calendar.Data.UserData;
+import java.util.*;
+import org.json.*;
+import Calendar.Data.*;
 
 public class JsonMaster {
 	private ArrayList<EventData> events = new ArrayList<EventData>();
@@ -101,7 +92,7 @@ public class JsonMaster {
 	                sender= jo.getString("sender");
 	                receiver = jo.getString("receiver");
 	                type = jo.getString("type");
-	                message = jo.getString("message");
+	                message = jo.getString("message").toString();
 	                Gid = jo.getString("Gid");
 	                Gname = jo.getString("Gname");
 	                
