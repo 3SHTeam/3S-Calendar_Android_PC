@@ -32,12 +32,10 @@ public class RequestPane extends JFrame{
 	private ArrayList<MessageData>request_ScheduleList=new ArrayList<MessageData>();
 	public ArrayList<MessageData> getRequest_ScheduleList() {return request_ScheduleList;}
 
-	private Vector<GroupData> allGroup_Vec=new Vector<GroupData>();
-	private Font f=new Font("¸¼Àº °íµñ",Font.BOLD,20);
 	
-	public RequestPane(Vector<GroupData> allGroup_Vec) {
-		this.allGroup_Vec=allGroup_Vec;
-		
+	private Font f=new Font("¸¼Àº °íµñ",Font.BOLD,20);
+
+	public RequestPane() {
 		String sql = "receiver='" + 
 				CalendarMain.getInstanace().getUser().getData(0) + "'";
 		
@@ -68,6 +66,8 @@ public class RequestPane extends JFrame{
 
 	}
 	
+	
+
 	public JPanel getRequestPanel() {return RequestPanel;}
 	
 	

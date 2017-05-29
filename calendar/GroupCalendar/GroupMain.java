@@ -20,7 +20,7 @@ public class GroupMain extends JFrame implements ActionListener{
 	private JSplitPane GroupPanel; // 그룹 정보(왼쪽 그룹이름, 오른쪽 해당 그룹의 스캐줄)
 	private JPanel RequestPanel;
 
-	private GroupPane eGroup;
+	private GroupPane groupPane;
 	private RequestPane eRequest;
 
 	private CalendarMain calendar; // 스캐줄 정보를 가져오기 위해
@@ -78,13 +78,12 @@ public class GroupMain extends JFrame implements ActionListener{
 		tab.setBounds(10, 0, 1200, 710);
 		tab.setOpaque(false);
 		//tab의 group부분
-		eGroup=new GroupPane();
-		GroupPanel=eGroup.getGroupSpiltPanel();
-		
-		allGroup_Vec=eGroup.getAllGroupVec();
+		groupPane=new GroupPane();
+		GroupPanel=groupPane.getGroupSpiltPanel();
+		allGroup_Vec=groupPane.getAllGroupVec();
 		
 		//tab의 request부분
-		eRequest=new RequestPane(allGroup_Vec);
+		eRequest=new RequestPane();
 		RequestPanel=eRequest.getRequestPanel();
 		
 		tab.addTab("그룹", GroupPanel);	
@@ -108,16 +107,7 @@ public class GroupMain extends JFrame implements ActionListener{
 		contentPane.add(logoutBtn);
 	      }	      
 		 });
-	
-
-
-
 	}	
-	
-
-	public void setDMonth_CalendarView(CalendarMain calendar) {
-		this.calendar = calendar;
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -137,7 +127,7 @@ public class GroupMain extends JFrame implements ActionListener{
 		}
 		
 		if (e.getSource() == AddGroupBtn) {
-			MakeGroup=new Add_Group(eGroup);
+			MakeGroup=new Add_Group(groupPane);
 			MakeGroup.setVisible(true);
 		}
 		if (e.getSource() == logoutBtn) {
@@ -145,9 +135,5 @@ public class GroupMain extends JFrame implements ActionListener{
 		}
 	}
 
-
-	public String getUserId() {
-		return calendar.getUser().getData(0);
-	}
 
 }
