@@ -122,8 +122,10 @@ class Request_EventModel extends AbstractTableModel {
 				} catch (JSONException e1) {
 					e1.printStackTrace();
 				}
-	      		 ///////////////////////////////////////그룹팬의 스케줄데이터 리프레쉬groupPane.refresh
+	      		 
 	      		sendEventToAndroid(message.toString());
+	      		
+	      		GroupMain.getInstanace().freshpanel();
                 
             } else {
                 System.out.println("Rejected");

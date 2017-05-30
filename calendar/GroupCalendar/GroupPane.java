@@ -49,13 +49,18 @@ public class GroupPane extends JFrame implements ActionListener{
 	
 	public GroupPane() {
 		user_id=CalendarMain.getInstanace().getUser().getData(0);
+		GroupPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		GroupPanel.setDividerLocation(200);
+		
+		freshpanel();
+		
+	}
 
+	public void freshpanel() {
 		freshGroup();
 		
-		GroupPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);	
 		GroupPanel.setLeftComponent(Left_GroupPanel());//왼쪽:그룹들
 		GroupPanel.setRightComponent(Right_GroupPanel());//오른쪽:한그룹의 스케줄
-		GroupPanel.setDividerLocation(200);
 	}
 
 	private JScrollPane Left_GroupPanel() {

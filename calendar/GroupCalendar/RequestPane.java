@@ -27,25 +27,44 @@ public class RequestPane extends JFrame{
 	public ArrayList<MessageData> getMessages() {return messages;}
 	public void setMessages(ArrayList<MessageData> messages) {this.messages = messages;}
 	
-	private ArrayList<MessageData>request_GroupList=new ArrayList<MessageData>();
+	private ArrayList<MessageData>request_GroupList;
 	public ArrayList<MessageData> getRequest_GroupList() {return request_GroupList;}
-	private ArrayList<MessageData>request_ScheduleList=new ArrayList<MessageData>();
+	private ArrayList<MessageData>request_ScheduleList;
 	public ArrayList<MessageData> getRequest_ScheduleList() {return request_ScheduleList;}
 
 	
 	private Font f=new Font("맑은 고딕",Font.BOLD,20);
 
 	public RequestPane() {
-		String sql = "receiver='" + 
-				CalendarMain.getInstanace().getUser().getData(0) + "'";
+		RequestPanel = new JPanel();
+		RequestPanel.setLayout(null);
 		
-		selectMyInviteToDB(sql);
+		freshPanel();
+
+	}
+	
+	
+
+	public void freshPanel() {
+		freshMessage();
+		
+		Request_GroupTable requestGTable=new Request_GroupTable(request_GroupList);
+		RequestPanel.add(requestGTable.getRequestPane());
+		
+		Request_EventTable requestETable=new Request_EventTable(request_ScheduleList);
+		RequestPanel.add(requestETable.getRequestPane());
+		
+	}
+	private void freshMessage() {
+		selectMyInviteToDB();
+		
+		request_GroupList=new ArrayList<MessageData>();
+		request_ScheduleList=new ArrayList<MessageData>();
 		
 		//message타입별로 구분 model에 add
 		if(messages!=null){
 			for(int i=0;i<messages.size();i++){
 				MessageData message=messages.get(i);
-				
 				if(message.getData(3).equals("groupInvite")){
 					request_GroupList.add(message);
 				}
@@ -53,21 +72,10 @@ public class RequestPane extends JFrame{
 					request_ScheduleList.add(message);
 				}
 			}
-		
-		}			
-		RequestPanel = new JPanel();
-		RequestPanel.setLayout(null);
-		
-		Request_GroupTable requestGTable=new Request_GroupTable(request_GroupList);
-		RequestPanel.add(requestGTable.getRequestPane());
-		
-		Request_EventTable requestETable=new Request_EventTable(request_ScheduleList);
-		RequestPanel.add(requestETable.getRequestPane());
-
+		}
 	}
 	
 	
-
 	public JPanel getRequestPanel() {return RequestPanel;}
 	
 	
@@ -83,9 +91,11 @@ public class RequestPane extends JFrame{
 	      }
 	}
 	
-	   private void selectMyInviteToDB(String sql) {
+	   private void selectMyInviteToDB() {
 	      String url = "http://113.198.84.67/Calendar3S/SelectMyMessage.php";
-
+	      String sql = "receiver='" + 
+					CalendarMain.getInstanace().getUser().getData(0) + "'";
+	      
 	      SendToDB stDB = new SendToDB(url, sql);
 	      stDB.start();
 	      try {

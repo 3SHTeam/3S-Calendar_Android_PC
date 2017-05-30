@@ -20,7 +20,6 @@
 	<classpathentry kind="lib" path="jar/mysql-connector-java-5.1.41-bin.jar"/>
 	<classpathentry kind="lib" path="jar/jackson-databind-2.3.1.jar"/>
 	<classpathentry kind="lib" path="jar/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/최보윤/git/3S-Calendar_PC/calendar/jar/jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="jar/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

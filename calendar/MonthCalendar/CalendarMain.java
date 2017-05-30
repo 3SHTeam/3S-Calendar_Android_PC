@@ -17,6 +17,7 @@ import GroupCalendar.GroupMain;
 
 
 public class CalendarMain extends JFrame implements ActionListener {
+	private GroupMain groupMain;
 	private JPanel contentPane;
 	private JPanel YearPanel;// ³â
 	private JLabel YearLabel;
@@ -391,8 +392,8 @@ public class CalendarMain extends JFrame implements ActionListener {
 		
 		if (e.getSource() == groupBtn) {
 			this.setVisible(false);
-			GroupMain fgMain=new GroupMain(this);
-			fgMain.setVisible(true);
+			groupMain = (GroupMain) GroupMain.getInstanace();
+			groupMain.setVisible(true);
 		}
 		if (e.getSource() == myPageBtn) {
 			FMypage mypage = new FMypage(this.getUser());

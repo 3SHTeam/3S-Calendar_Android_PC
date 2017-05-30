@@ -101,7 +101,8 @@ public class Request_GroupModel extends AbstractTableModel {
                 addGroupTag(msg.getData(6),msg.getData(5));
                 
                //groupPane.refreshLeftNameList();
-                
+
+	      		GroupMain.getInstanace().freshpanel();
             } else {
                 System.out.println("Rejected");
             } 
