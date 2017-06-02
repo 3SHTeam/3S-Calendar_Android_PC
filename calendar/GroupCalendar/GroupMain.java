@@ -14,12 +14,11 @@ import Calendar.UI.Images;
 import MonthCalendar.CalendarMain;
 
 public class GroupMain extends JFrame implements ActionListener {
-	private JTabbedPane tab;
 	private JPanel contentPane;
 	private JSplitPane GroupPanel; // 그룹 정보(왼쪽 그룹이름, 오른쪽 해당 그룹의 스캐줄)
 	private JPanel RequestPanel;
 
-	private GroupPane groupPane;
+	private GroupPane groupPane = new GroupPane();
 	private RequestPane eRequest;
 
 	private static CalendarMain calendar; // 스캐줄 정보를 가져오기 위해
@@ -31,10 +30,10 @@ public class GroupMain extends JFrame implements ActionListener {
 	private Add_Group MakeGroup;
 	private Vector<GroupData> allGroup_Vec = new Vector<GroupData>();
 
-	public static final GroupMain instance = new GroupMain(calendar);
+	//public static final GroupMain instance = new GroupMain(calendar);
 	
-	public GroupMain(CalendarMain calendar) {
-		this.calendar = calendar;
+	public GroupMain() {
+		this.calendar = CalendarMain.getInstanace();
 		setTitle("Group");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1230, 850);
@@ -72,25 +71,16 @@ public class GroupMain extends JFrame implements ActionListener {
 						| UnsupportedLookAndFeelException ex) {
 				}
 
-				tab = new JTabbedPane();
-				tab.setBounds(10, 0, 1200, 710);
-				tab.setOpaque(false);
-
 				groupPane = new GroupPane();
-				eRequest = new RequestPane();
-				freshpanel();
-
-				tab.addTab("그룹", GroupPanel);
-				tab.setOpaque(false);
-				tab.addTab("요청메세지", RequestPanel);
-				tab.setOpaque(false);
+				GroupPanel = groupPane.getGroupSpiltPanel();
+				allGroup_Vec = groupPane.getAllGroupVec();
 
 				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 				setContentPane(contentPane);
 				contentPane.setLayout(null);
 				setLocationRelativeTo(null);
 
-				contentPane.add(tab);
+				contentPane.add(GroupPanel);
 				contentPane.add(calendarBtn);
 				contentPane.add(AddGroupBtn);
 				contentPane.add(mypageBtn);
@@ -106,9 +96,9 @@ public class GroupMain extends JFrame implements ActionListener {
 		GroupPanel = groupPane.getGroupSpiltPanel();
 		allGroup_Vec = groupPane.getAllGroupVec();
 
-		// tab의 request부분
-		eRequest.freshPanel();
-		RequestPanel = eRequest.getRequestPanel();
+//		 tab의 request부분
+//		eRequest.freshPanel();
+//		RequestPanel = eRequest.getRequestPanel();
 	}
 
 	@Override
@@ -136,8 +126,8 @@ public class GroupMain extends JFrame implements ActionListener {
 		}
 	}
 	
-	public static GroupMain getInstanace(){
-		return instance;
-	}
+//	public static GroupMain getInstanace(){
+//		return instance;
+//	}
 
 }

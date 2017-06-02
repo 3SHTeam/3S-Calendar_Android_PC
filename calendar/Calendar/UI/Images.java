@@ -1,7 +1,5 @@
 package Calendar.UI;
 
-import java.awt.Color;
-import java.lang.reflect.Field;
 
 import javax.swing.ImageIcon;
 

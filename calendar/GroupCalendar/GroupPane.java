@@ -40,17 +40,18 @@ public class GroupPane extends JFrame implements ActionListener{
 
 	private Vector<String> GnameVec;//그룹이름들
 	private String selectedName;//테이블 열이름
+	
+	private RequestPane eRequest;
 
 	private String user_id;
 	private static SendToDB stDB;
 	private static String url, Googleid, result;
 	private JsonMaster jm;
-
 	
 	public GroupPane() {
 		user_id=CalendarMain.getInstanace().getUser().getData(0);
-		GroupPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		GroupPanel.setDividerLocation(200);
+//		GroupPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+//		GroupPanel.setBounds(10, 0, 1200, 710);
 		
 		freshpanel();
 		
@@ -59,8 +60,13 @@ public class GroupPane extends JFrame implements ActionListener{
 	public void freshpanel() {
 		freshGroup();
 		
+		GroupPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		GroupPanel.setBounds(10, 0, 1200, 710);
+		GroupPanel.setDividerLocation(200);
 		GroupPanel.setLeftComponent(Left_GroupPanel());//왼쪽:그룹들
 		GroupPanel.setRightComponent(Right_GroupPanel());//오른쪽:한그룹의 스케줄
+		
+		
 	}
 
 	private JScrollPane Left_GroupPanel() {
@@ -134,29 +140,10 @@ public class GroupPane extends JFrame implements ActionListener{
 	}
 
 	
-	private JScrollPane Right_GroupPanel() {
-	//	JPanel GroupEventsPane=new JPanel();
-	//	GroupEventsPane.setLayout(new BorderLayout());
+	private JPanel Right_GroupPanel() {
+		eRequest = new RequestPane(this);
 		
-		JScrollPane rightScrollPane=new JScrollPane(right_groupScheduleTable);
-	//	GroupEventsPane.add(GroupNameLabel,BorderLayout.NORTH);
-	//	GroupEventsPane.add(rightScrollPane,BorderLayout.CENTER);
-
-		//오른쪽 그룹의 스케줄표기
-		String RightColNames[] = { "스케줄명", "시간" }; // Jtable 헤더는 1차원 배열
-		rightModel = new DefaultTableModel(RightColNames, 0) { // 셀 수정 못하게 하는 부분
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		rightModel.setNumRows(0);
-		
-		right_groupScheduleTable=new JTable(rightModel);		
-		right_groupScheduleTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // 단일선택
-		right_groupScheduleTable.setShowVerticalLines(false);
-		
-
-		return rightScrollPane;
+		return eRequest.getRequestPanel();
 	}
 	
 	// 그룹 추가후 다시 db에서받기

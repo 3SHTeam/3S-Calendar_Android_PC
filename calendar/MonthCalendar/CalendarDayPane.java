@@ -69,7 +69,7 @@ public class CalendarDayPane extends JPanel implements ActionListener{
 		dayNumPanel.setOpaque(false);
 		
 		schedulePanel=new JPanel();
-		schedulePanel.setLayout(new GridLayout(4,1));
+		schedulePanel.setLayout(new GridLayout(4,1,1,0));
 		schedulePanel.setOpaque(false);
 		for(int i = 0 ;i<4;i++){
 			schedulePanel.add(ScheduleLabel[i]);

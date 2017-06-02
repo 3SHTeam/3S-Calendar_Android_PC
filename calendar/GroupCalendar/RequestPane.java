@@ -35,7 +35,10 @@ public class RequestPane extends JFrame{
 	
 	private Font f=new Font("¸¼Àº °íµñ",Font.BOLD,20);
 
-	public RequestPane() {
+	private GroupPane gmain;
+	
+	public RequestPane(GroupPane gmain) {
+		this.gmain = gmain;
 		RequestPanel = new JPanel();
 		RequestPanel.setLayout(null);
 		
@@ -48,10 +51,10 @@ public class RequestPane extends JFrame{
 	public void freshPanel() {
 		freshMessage();
 		
-		Request_GroupTable requestGTable=new Request_GroupTable(request_GroupList);
+		Request_GroupTable requestGTable=new Request_GroupTable(request_GroupList,gmain);
 		RequestPanel.add(requestGTable.getRequestPane());
 		
-		Request_EventTable requestETable=new Request_EventTable(request_ScheduleList);
+		Request_EventTable requestETable=new Request_EventTable(request_ScheduleList,gmain);
 		RequestPanel.add(requestETable.getRequestPane());
 		
 	}

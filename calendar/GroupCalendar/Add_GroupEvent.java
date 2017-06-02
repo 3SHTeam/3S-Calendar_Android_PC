@@ -74,7 +74,6 @@ public class Add_GroupEvent extends initEventPanel{
 
 		    calendar=CalendarMain.getInstanace();
 		    tags=calendar.getTags();
-		    
 		    Date date=new Date();
 
 			dateChooser = new JDateChooser();
@@ -184,8 +183,9 @@ public class Add_GroupEvent extends initEventPanel{
 			     String tagname=tagLabel.getText();
 			      	 
 			     for(int i=0;i<tags.size();i++){
-			      	if(tagname.equals(tags.get(i).getData(1))){
+			      	if(Gid.equals(tags.get(i).getData(5))){
 			      	  tagId=tags.get(i).getData(0);
+			      	  System.out.println("Tagid : " + tagId);
 			      	  }
 			      }
 		      	 

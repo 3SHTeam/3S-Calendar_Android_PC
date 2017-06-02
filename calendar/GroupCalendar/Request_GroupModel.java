@@ -13,6 +13,9 @@ import MonthCalendar.CalendarMain;
 public class Request_GroupModel extends AbstractTableModel {
 	private List<RequestGroupData> datalist;
 	private ArrayList<MessageData> groupMsgs=new ArrayList<MessageData>();
+	
+	private GroupPane gmain;
+	public void setGPane(GroupPane gmain){this.gmain = gmain;}
 
     public Request_GroupModel(ArrayList<MessageData> groupMsgs) {
     	   datalist = new ArrayList<>();
@@ -102,7 +105,7 @@ public class Request_GroupModel extends AbstractTableModel {
                 
                //groupPane.refreshLeftNameList();
 
-	      		GroupMain.getInstanace().freshpanel();
+	      		gmain.freshpanel();
             } else {
                 System.out.println("Rejected");
             } 

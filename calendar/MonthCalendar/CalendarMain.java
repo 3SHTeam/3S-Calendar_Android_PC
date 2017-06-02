@@ -39,9 +39,10 @@ public class CalendarMain extends JFrame implements ActionListener {
 	private JButton delTagBtn;
 	private JButton refreshBtn;
 	private JCheckBox tagbox;
-
+	
 	private static GroupMain group;
-
+	private static int groupCount = 0;
+	
 	public static final CalendarMain instance = new CalendarMain(group);
 
 	private Calendar now = Calendar.getInstance();
@@ -385,14 +386,17 @@ public class CalendarMain extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if(e.getSource() == refreshBtn){
-			refreshSchedule();
 			freshTag();
+			
+			refreshSchedule();
 			refreshTag();
 		}
 		
 		if (e.getSource() == groupBtn) {
 			this.setVisible(false);
-			groupMain = (GroupMain) GroupMain.getInstanace();
+			groupMain = new GroupMain();
+			//groupMain = (GroupMain) GroupMain.getInstanace();
+			//groupMain.freshpanel();
 			groupMain.setVisible(true);
 		}
 		if (e.getSource() == myPageBtn) {

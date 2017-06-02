@@ -19,14 +19,14 @@ public class Request_GroupTable extends JFrame{
 	private GroupPane groupPane;
 	public GroupPane getGroupPane() {return groupPane;}
 	public void setGroupPane(GroupPane groupPane) {this.groupPane = groupPane;}
-
-
-	public Request_GroupTable(ArrayList<MessageData> request_GroupList) {
+	
+	public Request_GroupTable(ArrayList<MessageData> request_GroupList, GroupPane gmain) {
 		this.request_GroupList=request_GroupList;
 		
 		model = new Request_GroupModel(request_GroupList);
+		model.setGPane(gmain);
 		
-		pane.setBounds(0,0,1200,300);
+		pane.setBounds(0,0,1000,300);
 		pane.setLayout(null);
 		JLabel AddGroupLabel = new JLabel("그룹 요청 메세지");
 		AddGroupLabel.setFont(new Font("맑은 고딕",Font.BOLD,20));
@@ -43,13 +43,13 @@ public class Request_GroupTable extends JFrame{
          table.getColumnModel().getColumn(3).setCellEditor(new Editor());
          table.setRowHeight(renderer.getTableCellRendererComponent(table, null, true, true, 0, 0).getPreferredSize().height);
          
-         table.setPreferredScrollableViewportSize(new Dimension(1150, 220));
+         table.setPreferredScrollableViewportSize(new Dimension(975, 220));
          table.getColumnModel().getColumn(0).setPreferredWidth(250);// 각 컬럼이름 사이즈 조정
          table.getColumnModel().getColumn(1).setPreferredWidth(350);
          table.getColumnModel().getColumn(2).setPreferredWidth(300);
          table.getColumnModel().getColumn(3).setPreferredWidth(250);
 		JScrollPane scrollPane1 = new JScrollPane(table);
-		scrollPane1.setBounds(2, 47, 1189, 221);
+		scrollPane1.setBounds(2, 47, 980, 221);
 		
 		pane.add(scrollPane1);
 	}

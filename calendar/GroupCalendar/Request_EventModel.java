@@ -20,6 +20,9 @@ class Request_EventModel extends AbstractTableModel {
 		datalist = new ArrayList<>();
 	}
 
+    private GroupPane gmain;
+	public void setGPane(GroupPane gmain){this.gmain = gmain;}
+	
 	@Override
     public String getColumnName(int column) {
         String value = null;
@@ -125,7 +128,7 @@ class Request_EventModel extends AbstractTableModel {
 	      		 
 	      		sendEventToAndroid(message.toString());
 	      		
-	      		GroupMain.getInstanace().freshpanel();
+	      		gmain.freshpanel();
                 
             } else {
                 System.out.println("Rejected");
